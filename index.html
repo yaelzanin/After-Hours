@@ -439,7 +439,12 @@
     </footer>
 
     <!-- Audio Element -->
-    <audio id="main-audio" src="testson.mp3" preload="metadata"></audio>
+    <!-- Fallback source provided to prevent "No supported sources" error when testson.mp3 is missing locally -->
+    <audio id="main-audio" preload="metadata">
+        <source src="testson.mp3" type="audio/mpeg">
+        <!-- Adding a remote fallback in case the local file is not accessible -->
+        <source src="https://assets.mixkit.co/active_storage/sfx/120/120-preview.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Interactive Scripts -->
     <script>
@@ -647,7 +652,10 @@
                     audioEl.play().then(() => {
                         isPlaying = true;
                         updatePlayButtonsState(true);
-                    }).catch(err => console.error("La lecture audio a échoué:", err));
+                    }).catch(err => {
+                        console.error("La lecture audio a échoué:", err);
+                        alert("Le fichier audio (testson.mp3) n'a pas pu être chargé. Assurez-vous que le fichier est présent dans le même dossier.");
+                    });
                 } else {
                     audioEl.pause();
                     isPlaying = false;
