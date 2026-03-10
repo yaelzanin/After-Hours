@@ -409,15 +409,15 @@
             
             <!-- Progress Bar -->
             <div class="flex items-center gap-2 w-full">
-                <span class="text-[11px] text-spotify-text">00:00</span>
-                <div data-action="Changement de la position de lecture" class="action-btn h-1 bg-white/20 rounded-full flex-1 group cursor-pointer flex items-center relative">
+                <span id="current-time" class="text-[11px] text-spotify-text">00:00</span>
+                <div id="progress-container" data-action="Changement de la position de lecture" class="action-btn h-1 bg-white/20 rounded-full flex-1 group cursor-pointer flex items-center relative">
                     <!-- Progress fill -->
-                    <div class="h-1 bg-white group-hover:bg-amber-500 w-0 rounded-full relative transition-all duration-300">
+                    <div id="progress-fill" class="h-1 bg-white group-hover:bg-amber-500 w-0 rounded-full relative">
                         <!-- Dragger handle -->
                         <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
                     </div>
                 </div>
-                <span class="text-[11px] text-spotify-text">54:20</span>
+                <span id="total-time" class="text-[11px] text-spotify-text">00:00</span>
             </div>
         </div>
 
@@ -437,6 +437,9 @@
             </div>
         </div>
     </footer>
+
+    <!-- Audio Element -->
+    <audio id="main-audio" src="testson.mp3" preload="metadata"></audio>
 
     <!-- Interactive Scripts -->
     <script>
@@ -561,28 +564,95 @@
             });
         }
 
+        // Configuration Audio & Progression
+        const audioEl = document.getElementById('main-audio');
+        const currentTimeEl = document.getElementById('current-time');
+        const totalTimeEl = document.getElementById('total-time');
+        const progressContainer = document.getElementById('progress-container');
+        const progressFill = document.getElementById('progress-fill');
+        
+        // Initialisation du volume
+        audioEl.volume = 0.66;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds) || !isFinite(seconds)) return "00:00";
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        // Afficher la durée quand l'audio est prêt
+        if (audioEl.readyState > 0) {
+            totalTimeEl.textContent = formatTime(audioEl.duration);
+        } else {
+            audioEl.addEventListener('loadedmetadata', () => {
+                totalTimeEl.textContent = formatTime(audioEl.duration);
+            });
+        }
+
+        // Mettre à jour la progression pendant la lecture
+        audioEl.addEventListener('timeupdate', () => {
+            currentTimeEl.textContent = formatTime(audioEl.currentTime);
+            if (audioEl.duration) {
+                const percent = (audioEl.currentTime / audioEl.duration) * 100;
+                progressFill.style.width = `${percent}%`;
+            }
+        });
+
+        // Remise à zéro à la fin
+        audioEl.addEventListener('ended', () => {
+            isPlaying = false;
+            updatePlayButtonsState(false);
+            progressFill.style.width = '0%';
+            currentTimeEl.textContent = "00:00";
+        });
+
+        // Clic sur la barre de progression pour avancer/reculer
+        if (progressContainer) {
+            progressContainer.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const rect = progressContainer.getBoundingClientRect();
+                const pos = (e.clientX - rect.left) / rect.width;
+                if (audioEl.duration) {
+                    audioEl.currentTime = pos * audioEl.duration;
+                }
+            });
+        }
+
         // Play / Pause Toggle Logic
         let isPlaying = false;
+
+        function updatePlayButtonsState(playing) {
+            document.querySelectorAll('.play-toggle-btn i').forEach(icon => {
+                if (playing) {
+                    icon.classList.remove('fa-play', 'ml-1', 'ml-0.5');
+                    icon.classList.add('fa-pause');
+                } else {
+                    icon.classList.remove('fa-pause');
+                    icon.classList.add('fa-play', 'ml-1');
+                    // Specific fix for the main player button alignment
+                    if (icon.parentElement.classList.contains('bg-white')) {
+                        icon.classList.remove('ml-1');
+                        icon.classList.add('ml-0.5');
+                    }
+                }
+            });
+        }
+
         document.querySelectorAll('.play-toggle-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation(); // Prevent triggering parent action-btn
-                isPlaying = !isPlaying;
                 
-                // Update ALL play buttons on screen to sync state
-                document.querySelectorAll('.play-toggle-btn i').forEach(icon => {
-                    if (isPlaying) {
-                        icon.classList.remove('fa-play', 'ml-1', 'ml-0.5');
-                        icon.classList.add('fa-pause');
-                    } else {
-                        icon.classList.remove('fa-pause');
-                        icon.classList.add('fa-play', 'ml-1');
-                        // Specific fix for the main player button alignment
-                        if (icon.parentElement.classList.contains('bg-white')) {
-                            icon.classList.remove('ml-1');
-                            icon.classList.add('ml-0.5');
-                        }
-                    }
-                });
+                if (audioEl.paused) {
+                    audioEl.play().then(() => {
+                        isPlaying = true;
+                        updatePlayButtonsState(true);
+                    }).catch(err => console.error("La lecture audio a échoué:", err));
+                } else {
+                    audioEl.pause();
+                    isPlaying = false;
+                    updatePlayButtonsState(false);
+                }
             });
         });
 
@@ -626,6 +696,9 @@
         function updateVolumeVisuals(vol) {
             // Mise à jour de la barre visuelle
             volumeFill.style.width = `${vol * 100}%`;
+            
+            // Mise à jour réelle du volume de l'audio
+            audioEl.volume = vol;
             
             // Mise à jour de l'icône
             muteIcon.className = 'text-xs fas ';
