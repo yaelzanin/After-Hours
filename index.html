@@ -544,19 +544,20 @@
         </div>
 
         <!-- Header -->
-        <div class="flex justify-between items-center mb-10 relative z-10">
+        <div class="flex justify-between items-center mb-8 relative z-10 shrink-0">
             <button id="close-full-player" class="text-white p-2 -ml-2 active:opacity-70 transition-opacity"><i class="fas fa-chevron-down text-xl"></i></button>
             <span class="text-xs font-bold uppercase tracking-widest text-white">After Hours</span>
             <button class="text-white p-2 -mr-2"><i class="fas fa-ellipsis-h"></i></button>
         </div>
         
         <!-- Large Cover Art -->
-        <div class="w-full aspect-square shadow-2xl rounded-lg overflow-hidden mb-10 bg-[#181818] relative z-10">
+        <!-- Ajout de shrink-0 et max-w pour garantir que l'image ne soit jamais écrasée verticalement et reste 1:1 -->
+        <div class="w-full max-w-[85vw] mx-auto aspect-square shrink-0 shadow-2xl rounded-lg overflow-hidden mb-8 bg-[#181818] relative z-10">
             <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover pointer-events-none">
         </div>
         
         <!-- Info & Like -->
-        <div class="flex justify-between items-end mb-8 relative z-10">
+        <div class="flex justify-between items-end mb-6 relative z-10 shrink-0">
             <div class="flex flex-col pr-4 overflow-hidden">
                 <h2 class="text-2xl font-bold text-white mb-1 truncate">La musique comme refuge</h2>
                 <p class="text-spotify-text text-base truncate">After Hours</p>
@@ -567,9 +568,9 @@
         </div>
         
         <!-- Interactive Progress Bar -->
-        <div class="mb-8 mt-auto relative z-10">
+        <div class="mb-8 mt-auto relative z-10 shrink-0">
             <div id="full-progress-container" class="h-1 bg-transparent rounded-full w-full cursor-pointer relative py-4 -my-4 flex items-center">
-                <div class="w-full h-1 rounded-full relative pointer-events-none">
+                <div class="w-full h-1 rounded-full relative pointer-events-none bg-transparent">
                     <div id="full-progress-fill" class="h-full bg-white rounded-full relative pointer-events-none transition-colors w-0">
                         <!-- Dragger handle always visible on mobile full player -->
                         <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
@@ -583,7 +584,7 @@
         </div>
         
         <!-- Big Playback Controls -->
-        <div class="flex justify-between items-center px-2 relative z-10">
+        <div class="flex justify-between items-center px-2 relative z-10 shrink-0">
             <button class="shuffle-toggle-btn text-spotify-text active:text-white transition"><i class="fas fa-random text-2xl"></i></button>
             <button class="text-white active:opacity-70 transition"><i class="fas fa-step-backward text-4xl"></i></button>
             
@@ -596,9 +597,9 @@
         </div>
     </div>
 
-    <!-- Audio Element avec une source en ligne fiable -->
+    <!-- Audio Element avec la source locale demandée -->
     <audio id="main-audio" preload="metadata">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <source src="testson.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Interactive Scripts -->
