@@ -2,7 +2,7 @@
 <html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>After Hours | Podcast Nocturne</title>
     
     <!-- Favicon -->
@@ -49,7 +49,13 @@
             background-color: #121212;
             color: #ffffff;
             /* Padding bottom to ensure content isn't hidden behind the fixed player */
-            padding-bottom: 90px; 
+            padding-bottom: 70px; /* Reduced for mobile */
+        }
+        
+        @media (min-width: 640px) {
+            body {
+                padding-bottom: 90px; /* Desktop padding */
+            }
         }
 
         /* Custom Scrollbar */
@@ -74,17 +80,37 @@
         }
 
         /* Tracklist hover logic */
-        .track-row:hover .track-num {
+        @media (min-width: 768px) {
+            .track-row:hover .track-num {
+                display: none;
+            }
+            .track-row:hover .track-play {
+                display: flex;
+            }
+        }
+        
+        .track-row.active-track .track-num {
             display: none;
         }
-        .track-row:hover .track-play {
+        .track-row.active-track .track-play {
             display: flex;
+            color: #f59e0b;
+        }
+        .track-row.active-track .track-title {
+            color: #f59e0b;
         }
 
         /* Truncate text utility */
         .line-clamp-1 {
             display: -webkit-box;
             -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;  
+            overflow: hidden;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;  
             overflow: hidden;
         }
@@ -98,33 +124,47 @@
         }
         
         .glass-nav {
-            background: rgba(18, 18, 18, 0.7);
+            background: rgba(18, 18, 18, 0.85); /* Slightly more opaque on mobile */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            /* Removed border-bottom to fix white line issue on scroll */
         }
 
         .glass-player {
-            background: rgba(24, 24, 24, 0.85);
+            background: rgba(24, 24, 24, 0.95); /* More opaque on mobile for readability */
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
+        /* Mobile specific utilities */
+        .mobile-hide {
+            display: none !important;
+        }
+        @media (min-width: 768px) {
+            .mobile-hide {
+                display: block !important;
+            }
+            .mobile-hide.flex {
+                display: flex !important;
+            }
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-amber-900 selection:text-white">
+<body class="antialiased selection:bg-amber-900 selection:text-white overscroll-none">
 
     <!-- Top Navbar (App style, Glassmorphism on scroll) -->
-    <nav id="navbar" class="fixed top-0 w-full z-40 transition-all duration-300 bg-transparent h-16 flex items-center px-6 justify-between">
-        <div class="flex items-center gap-4 flex-1">
+    <nav id="navbar" class="fixed top-0 w-full z-40 transition-all duration-300 bg-transparent h-14 md:h-16 flex items-center px-4 md:px-6 justify-between border-b border-transparent">
+        <div class="flex items-center gap-3 md:gap-4 flex-1">
             <button data-action="Navigation Précédente" class="action-btn w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-spotify-text hover:text-white transition cursor-pointer">
                 <i class="fas fa-chevron-left text-sm"></i>
             </button>
-            <button data-action="Navigation Suivante" class="action-btn w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-spotify-text hover:text-white transition cursor-pointer hidden md:flex">
+            <button data-action="Navigation Suivante" class="action-btn w-8 h-8 rounded-full bg-black/50 hidden md:flex items-center justify-center text-spotify-text hover:text-white transition cursor-pointer">
                 <i class="fas fa-chevron-right text-sm"></i>
             </button>
             
             <!-- Appears on scroll, aligned to the left next to navigation buttons -->
-            <div id="nav-title" class="font-bold text-lg opacity-0 transition-opacity duration-300 truncate px-4">
+            <div id="nav-title" class="font-bold text-base md:text-lg opacity-0 transition-opacity duration-300 truncate px-2 md:px-4">
                 After Hours
             </div>
         </div>
@@ -142,32 +182,35 @@
     <!-- Main Scrollable Area -->
     <main>
         <!-- Hero Section (Playlist/Podcast Header) -->
-        <header class="bg-gradient-header pt-24 pb-8 px-6 md:px-8">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-end gap-6 md:gap-8 mt-8">
+        <header class="bg-gradient-header pt-20 md:pt-24 pb-6 md:pb-8 px-4 md:px-8">
+            <!-- Mobile: Center aligned, Desktop: Left aligned -->
+            <div class="w-full flex flex-col md:flex-row items-center md:items-end gap-4 md:gap-8 mt-4 md:mt-8">
                 <!-- Cover Art -->
-                <div class="w-48 h-48 md:w-56 md:h-56 shrink-0 shadow-[0_8px_24px_rgba(0,0,0,0.5)] bg-spotify-elevated rounded cursor-pointer transition-transform duration-300 hover:scale-105 cover-trigger">
+                <div class="w-56 h-56 sm:w-48 sm:h-48 md:w-56 md:h-56 shrink-0 shadow-[0_8px_24px_rgba(0,0,0,0.5)] bg-spotify-elevated rounded cursor-pointer transition-transform duration-300 md:hover:scale-105 cover-trigger">
                     <img src="minia.jpg" 
                          alt="Cover After Hours" 
                          class="w-full h-full object-cover rounded">
                 </div>
                 
                 <!-- Text Info -->
-                <div class="flex flex-col gap-2 w-full">
-                    <span class="text-xs font-bold uppercase tracking-wider text-white">Podcast</span>
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-2 line-clamp-2">
+                <div class="flex flex-col gap-1 md:gap-2 w-full text-center md:text-left mt-2 md:mt-0">
+                    <span class="text-xs font-bold uppercase tracking-wider text-white md:block hidden">Podcast</span>
+                    <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white mb-1 md:mb-2 line-clamp-2">
                         After Hours
                     </h1>
-                    <div class="flex items-center gap-2 text-sm text-white/90 font-medium flex-wrap">
-                        <span class="w-6 h-6 rounded-full overflow-hidden inline-block align-middle">
+                    <span class="text-xs font-bold uppercase tracking-wider text-spotify-text block md:hidden mb-2">Podcast</span>
+                    
+                    <div class="flex items-center justify-center md:justify-start gap-2 text-xs md:text-sm text-white/90 font-medium flex-wrap">
+                        <span class="w-5 h-5 md:w-6 md:h-6 rounded-full overflow-hidden inline-block align-middle">
                             <img src="https://placehold.co/100x100/282828/f59e0b?text=A" alt="Axel" class="w-full h-full object-cover">
                         </span>
                         <button data-action="Profil de Axel" class="action-btn hover:underline cursor-pointer">Axel</button>  
-                        <span class="w-6 h-6 rounded-full overflow-hidden inline-block align-middle ml-1">
+                        <span class="w-5 h-5 md:w-6 md:h-6 rounded-full overflow-hidden inline-block align-middle ml-1">
                             <img src="https://placehold.co/100x100/282828/f59e0b?text=Y" alt="Yaël" class="w-full h-full object-cover">
                         </span>
                         <button data-action="Profil de Yaël" class="action-btn hover:underline cursor-pointer">Yaël</button>
                     </div>
-                    <p class="text-spotify-text text-sm font-medium mt-1">
+                    <p class="text-spotify-text text-xs md:text-sm font-medium mt-2 md:mt-1 px-4 md:px-0">
                         Soul, jazz et discussions nocturnes. Mises à jour bi-mensuelles.
                     </p>
                 </div>
@@ -175,94 +218,114 @@
         </header>
 
         <!-- Content Area -->
-        <div class="bg-spotify-base px-6 md:px-8 pb-12">
-            <div class="max-w-7xl mx-auto">
+        <div class="bg-spotify-base px-4 md:px-8 pb-12">
+            <!-- Alignement sur la gauche -->
+            <div class="w-full">
                 
                 <!-- Action Bar -->
-                <div class="flex items-center gap-6 py-6">
-                    <button class="play-toggle-btn w-14 h-14 md:w-16 md:h-16 rounded-full bg-amber-500 text-black flex items-center justify-center hover:scale-105 hover:bg-amber-400 transition-all shadow-lg">
-                        <i class="fas fa-play text-xl ml-1"></i>
-                    </button>
-                    <button class="like-btn text-spotify-text hover:text-white text-3xl transition-colors">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    <button data-action="Menu des options ouvert" class="action-btn text-spotify-text hover:text-white text-2xl transition-colors">
-                        <i class="fas fa-ellipsis-h"></i>
-                    </button>
+                <div class="flex items-center justify-between md:justify-start gap-4 md:gap-6 py-4 md:py-6">
+                    <div class="flex items-center gap-4 md:gap-6">
+                        <button class="play-toggle-btn w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full bg-amber-500 text-black flex items-center justify-center hover:scale-105 hover:bg-amber-400 transition-all shadow-lg">
+                            <i class="fas fa-play text-lg md:text-xl ml-1"></i>
+                        </button>
+                        <button class="like-btn text-spotify-text hover:text-white text-2xl md:text-3xl transition-colors">
+                            <i class="far fa-heart"></i>
+                        </button>
+                        <button data-action="Télécharger" class="action-btn text-spotify-text hover:text-white text-xl md:hidden transition-colors">
+                            <i class="far fa-arrow-alt-circle-down"></i>
+                        </button>
+                        <button data-action="Menu des options ouvert" class="action-btn text-spotify-text hover:text-white text-xl md:text-2xl transition-colors">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Episodes List (Tracklist style - Only 1 episode as requested) -->
-                <div class="mt-4">
-                    <h2 class="text-2xl font-bold mb-4">Dernier épisode</h2>
+                <!-- Episodes List (Tracklist style) -->
+                <div class="mt-2 md:mt-4">
+                    <h2 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Dernier épisode</h2>
                     
-                    <!-- Table Header -->
-                    <div class="grid grid-cols-[32px_1fr_80px_60px] md:grid-cols-[40px_1fr_120px_100px] gap-4 px-4 py-2 text-spotify-text text-xs md:text-sm font-medium border-b border-spotify-highlight mb-4">
+                    <!-- Table Header (Hidden on mobile) -->
+                    <div class="hidden md:grid grid-cols-[40px_1fr_120px_100px] gap-4 px-4 py-2 text-spotify-text text-sm font-medium border-b border-spotify-highlight mb-4">
                         <span class="text-center">#</span>
                         <span>Titre</span>
-                        <span class="hidden md:block">Date</span>
+                        <span>Date</span>
                         <span class="text-right"><i class="far fa-clock"></i></span>
                     </div>
 
-                    <!-- Episode 1 -->
-                    <div class="action-btn track-row group grid grid-cols-[32px_1fr_80px_60px] md:grid-cols-[40px_1fr_120px_100px] gap-4 px-4 py-3 items-center hover:bg-white/5 rounded-md transition-colors cursor-pointer glass-panel border-transparent hover:border-white/10" data-action="Lecture de : La musique comme refuge">
-                        <div class="text-center text-spotify-text w-full">
-                            <span class="track-num">1</span>
-                            <span class="track-play hidden justify-center text-white"><i class="fas fa-play text-xs"></i></span>
+                    <!-- Episode 1 (Mobile optimized) -->
+                    <div id="main-track-row" class="action-btn track-row group flex md:grid md:grid-cols-[40px_1fr_120px_100px] gap-3 md:gap-4 p-2 md:px-4 md:py-3 items-center active:bg-white/10 md:hover:bg-white/5 rounded-md transition-colors cursor-pointer glass-panel md:border-transparent md:hover:border-white/10" data-action="Lecture de : La musique comme refuge">
+                        
+                        <!-- Thumbnail for mobile, Number for desktop -->
+                        <div class="w-12 h-12 md:w-auto md:h-auto flex-shrink-0 relative rounded overflow-hidden md:overflow-visible">
+                            <img src="minia.jpg" class="w-full h-full object-cover md:hidden" alt="Thumbnail">
+                            <div class="hidden md:flex text-center text-spotify-text w-full justify-center items-center">
+                                <span class="track-num">1</span>
+                                <button class="track-play hidden justify-center text-white play-toggle-btn items-center hover:scale-110 transition-transform"><i class="fas fa-play text-xs"></i></button>
+                            </div>
                         </div>
-                        <div class="pr-4">
-                            <div class="text-white font-medium text-base mb-1 line-clamp-1">La musique comme refuge</div>
-                            <div class="text-spotify-text text-sm line-clamp-1">Une discussion spontanée sur la façon dont la musique nous accompagne, nos disques refuges et le pouvoir réconfortant d'une mélodie.</div>
+
+                        <!-- Text content -->
+                        <div class="flex-1 min-w-0 pr-2 md:pr-4">
+                            <div class="track-title text-white font-medium text-sm md:text-base mb-0.5 md:mb-1 line-clamp-1 transition-colors">La musique comme refuge</div>
+                            <div class="text-spotify-text text-xs md:text-sm line-clamp-1 md:line-clamp-1">Une discussion spontanée sur la façon dont la musique nous accompagne.</div>
                         </div>
-                        <span class="text-spotify-text text-sm hidden md:block">24 Oct</span>
-                        <span class="text-spotify-text text-sm text-right">54:20</span>
+
+                        <!-- Metadata -->
+                        <span class="text-spotify-text text-xs hidden md:block">24 Oct</span>
+                        <div class="flex items-center gap-3 text-spotify-text text-xs">
+                            <span id="track-duration-text" class="md:text-sm md:text-right">00:00</span>
+                            <button class="md:hidden text-spotify-text hover:text-white"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Concept / About (Glassmorphism card) -->
-                <div class="mt-16">
-                    <h2 class="text-2xl font-bold mb-6">À propos</h2>
-                    <div id="about-trigger" class="glass-panel rounded-xl p-6 md:p-8 hover:bg-white/5 transition-colors max-w-3xl cursor-pointer group">
-                        <div class="flex items-center justify-between">
-                            <p class="text-spotify-text leading-relaxed text-sm md:text-base font-medium pr-4">
-                                Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel...
+                <div class="mt-10 md:mt-16">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">À propos</h2>
+                    <div id="about-trigger" class="glass-panel rounded-xl p-4 md:p-8 active:bg-white/10 md:hover:bg-white/5 transition-colors max-w-3xl cursor-pointer group">
+                        <div class="flex items-start md:items-center justify-between">
+                            <p class="text-spotify-text leading-relaxed text-sm md:text-base font-medium pr-4 line-clamp-3 md:line-clamp-none">
+                                Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel. Nous y partageons nos dernières pépites vinyles...
                             </p>
-                            <span class="text-white/30 group-hover:text-white transition-colors"><i class="fas fa-expand-alt"></i></span>
+                            <span class="text-white/30 group-hover:text-white transition-colors mt-1 md:mt-0 flex-shrink-0"><i class="fas fa-chevron-right md:fa-expand-alt text-xs md:text-base"></i></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Hosts (Glassmorphism Profile Cards) -->
-                <div class="mt-16 mb-8">
-                    <h2 class="text-2xl font-bold mb-6">Production</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                <div class="mt-10 md:mt-16 mb-8">
+                    <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Production</h2>
+                    
+                    <!-- Mobile Scrollable Row / Desktop Grid -->
+                    <div class="flex md:grid md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
                         
                         <!-- Card Axel -->
-                        <div class="glass-panel p-4 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn" data-action="Ouverture du profil de Axel">
-                            <div class="relative mb-4">
+                        <div class="glass-panel p-3 md:p-4 rounded-xl active:bg-white/10 md:hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Axel">
+                            <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Axel" 
                                      alt="Axel" 
                                      class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
                             </div>
-                            <h3 class="font-bold text-white truncate">Axel</h3>
-                            <p class="text-sm text-spotify-text truncate mt-1">Digger & Réal</p>
+                            <h3 class="font-bold text-white text-sm md:text-base truncate">Axel</h3>
+                            <p class="text-xs md:text-sm text-spotify-text truncate mt-0.5 md:mt-1">Digger & Réal</p>
                         </div>
 
                         <!-- Card Yaël (Masculin) -->
-                        <div class="glass-panel p-4 rounded-xl hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn" data-action="Ouverture du profil de Yaël">
-                            <div class="relative mb-4">
+                        <div class="glass-panel p-3 md:p-4 rounded-xl active:bg-white/10 md:hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Yaël">
+                            <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Ya%C3%ABl" 
                                      alt="Yaël" 
                                      class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
                             </div>
-                            <h3 class="font-bold text-white truncate">Yaël</h3>
-                            <p class="text-sm text-spotify-text truncate mt-1">Curateur & Voix</p>
+                            <h3 class="font-bold text-white text-sm md:text-base truncate">Yaël</h3>
+                            <p class="text-xs md:text-sm text-spotify-text truncate mt-0.5 md:mt-1">Curateur & Voix</p>
                         </div>
 
                     </div>
                 </div>
 
                 <!-- Footer area inside main content -->
-                <div class="border-t border-white/10 pt-8 pb-16 text-spotify-text text-sm flex justify-end gap-4">
+                <div class="border-t border-white/10 pt-6 md:pt-8 pb-8 md:pb-16 text-spotify-text text-xs md:text-sm flex justify-center md:justify-start gap-4">
                     <div>&copy; 2026 After Hours.</div>
                 </div>
 
@@ -271,27 +334,27 @@
     </main>
 
     <!-- Modal "À propos" détaillée avec image en plein fondue -->
-    <div id="about-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-4 md:p-8">
-        <div id="about-modal-content" class="relative max-w-5xl w-full h-[70vh] md:h-[60vh] bg-[#181818] border border-white/10 rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 flex flex-col md:flex-row">
+    <div id="about-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-0 md:p-8">
+        <div id="about-modal-content" class="relative md:max-w-5xl w-full h-full md:h-[60vh] bg-[#181818] md:border md:border-white/10 md:rounded-2xl shadow-2xl overflow-hidden transform scale-95 md:scale-95 transition-transform duration-300 flex flex-col md:flex-row">
             
             <!-- Image background filling the left side and fading to the right -->
             <div class="absolute inset-0 z-0 pointer-events-none">
-                <img src="aprop.jpg" alt="Illustration À propos" class="w-full h-full object-cover object-center md:object-left opacity-70 [-webkit-mask-image:linear-gradient(to_bottom,black_10%,transparent_90%)] md:[-webkit-mask-image:linear-gradient(to_right,black_0%,transparent_70%)] [mask-image:linear-gradient(to_bottom,black_10%,transparent_90%)] md:[mask-image:linear-gradient(to_right,black_0%,transparent_70%)]">
+                <img src="aprop.jpg" alt="Illustration À propos" class="w-full h-full object-cover object-center md:object-left opacity-40 md:opacity-70 [-webkit-mask-image:linear-gradient(to_bottom,black_10%,transparent_80%)] md:[-webkit-mask-image:linear-gradient(to_right,black_0%,transparent_70%)] [mask-image:linear-gradient(to_bottom,black_10%,transparent_80%)] md:[mask-image:linear-gradient(to_right,black_0%,transparent_70%)]">
             </div>
             
             <!-- Close button -->
-            <button id="close-about-btn" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/40 hover:bg-white/10 backdrop-blur-md text-white flex items-center justify-center transition z-20">
-                <i class="fas fa-times text-lg"></i>
+            <button id="close-about-btn" class="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-black/40 hover:bg-white/10 backdrop-blur-md text-white flex items-center justify-center transition z-20">
+                <i class="fas fa-times md:text-lg"></i>
             </button>
 
-            <!-- Texte descriptif (poussé à droite sur desktop, en bas sur mobile) -->
-            <div class="mt-auto md:mt-0 w-full md:w-1/2 ml-auto p-8 md:p-12 flex flex-col justify-center relative z-10 h-1/2 md:h-full">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-white drop-shadow-md">À propos</h2>
-                <div class="space-y-4">
-                    <p class="text-spotify-text leading-relaxed text-base md:text-lg">
+            <!-- Texte descriptif (poussé à droite sur desktop, centré sur mobile) -->
+            <div class="mt-auto md:mt-0 w-full md:w-1/2 ml-auto p-6 md:p-12 flex flex-col justify-center relative z-10 h-2/3 md:h-full">
+                <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-white drop-shadow-md">À propos</h2>
+                <div class="space-y-3 md:space-y-4 overflow-y-auto pb-8 md:pb-0">
+                    <p class="text-spotify-text leading-relaxed text-sm md:text-lg">
                         Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel.
                     </p>
-                    <p class="text-spotify-text leading-relaxed text-base md:text-lg">
+                    <p class="text-spotify-text leading-relaxed text-sm md:text-lg">
                         Nous y partageons nos dernières pépites vinyles, explorons les racines de la soul et laissons tourner la musique tard dans la nuit.
                     </p>
                 </div>
@@ -304,61 +367,61 @@
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
 
     <!-- Profil Sidebar Panel -->
-    <aside id="profile-sidebar" class="fixed top-0 right-0 h-full w-80 max-w-[80vw] bg-[#121212] border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <aside id="profile-sidebar" class="fixed top-0 right-0 h-full w-4/5 md:w-80 max-w-sm bg-[#121212] border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
         <!-- Header -->
-        <div class="flex items-center justify-between p-6 border-b border-white/10">
-            <h2 class="font-bold text-lg text-white">Profil</h2>
-            <button id="close-sidebar-btn" class="text-spotify-text hover:text-white transition">
-                <i class="fas fa-times text-xl"></i>
+        <div class="flex items-center justify-between p-4 md:p-6 border-b border-white/10">
+            <h2 class="font-bold text-base md:text-lg text-white">Profil</h2>
+            <button id="close-sidebar-btn" class="text-spotify-text hover:text-white transition p-2 -mr-2">
+                <i class="fas fa-times"></i>
             </button>
         </div>
         
         <!-- User Info -->
-        <div class="p-6 flex items-center gap-4 border-b border-white/10">
-            <div class="w-14 h-14 rounded-full overflow-hidden bg-amber-500 flex-shrink-0 flex items-center justify-center text-black font-bold text-xl shadow-lg">
+        <div class="p-4 md:p-6 flex items-center gap-3 md:gap-4 border-b border-white/10">
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden bg-amber-500 flex-shrink-0 flex items-center justify-center text-black font-bold text-lg md:text-xl shadow-lg">
                 GM
             </div>
             <div class="overflow-hidden">
-                <h3 class="font-bold text-white text-base truncate">Guillaume Malvoisin</h3>
-                <span class="inline-block mt-1 px-2 py-0.5 bg-white/10 rounded text-[10px] font-bold tracking-wider uppercase text-spotify-text">Premium</span>
+                <h3 class="font-bold text-white text-sm md:text-base truncate">Guillaume Malvoisin</h3>
+                <span class="inline-block mt-0.5 md:mt-1 px-1.5 md:px-2 py-0.5 bg-white/10 rounded text-[9px] md:text-[10px] font-bold tracking-wider uppercase text-spotify-text">Premium</span>
             </div>
         </div>
 
         <!-- Menu Tabs -->
-        <div class="flex-1 overflow-y-auto py-4">
+        <div class="flex-1 overflow-y-auto py-2 md:py-4">
             <nav class="flex flex-col">
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Compte">
-                    <i class="far fa-user w-5 text-center"></i>
-                    <span class="font-medium text-sm">Compte</span>
-                    <i class="fas fa-external-link-alt text-[10px] ml-auto opacity-50"></i>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Compte">
+                    <i class="far fa-user w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Compte</span>
+                    <i class="fas fa-external-link-alt text-[9px] md:text-[10px] ml-auto opacity-50"></i>
                 </button>
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Profil public">
-                    <i class="far fa-id-badge w-5 text-center"></i>
-                    <span class="font-medium text-sm">Profil public</span>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Profil public">
+                    <i class="far fa-id-badge w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Profil public</span>
                 </button>
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Paramètres">
-                    <i class="fas fa-cog w-5 text-center"></i>
-                    <span class="font-medium text-sm">Paramètres</span>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Paramètres">
+                    <i class="fas fa-cog w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Paramètres</span>
                 </button>
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Préférences audio">
-                    <i class="fas fa-sliders-h w-5 text-center"></i>
-                    <span class="font-medium text-sm">Préférences audio</span>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Préférences audio">
+                    <i class="fas fa-sliders-h w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Préférences audio</span>
                 </button>
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Historique d'écoute">
-                    <i class="fas fa-history w-5 text-center"></i>
-                    <span class="font-medium text-sm">Historique d'écoute</span>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Historique d'écoute">
+                    <i class="fas fa-history w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Historique d'écoute</span>
                 </button>
-                <button class="flex items-center gap-4 px-6 py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Nouveautés">
-                    <i class="far fa-bell w-5 text-center"></i>
-                    <span class="font-medium text-sm">Nouveautés</span>
-                    <span class="ml-auto bg-amber-500 w-2 h-2 rounded-full"></span>
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Nouveautés">
+                    <i class="far fa-bell w-5 text-center text-sm md:text-base"></i>
+                    <span class="font-medium text-xs md:text-sm">Nouveautés</span>
+                    <span class="ml-auto bg-amber-500 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full"></span>
                 </button>
             </nav>
         </div>
 
         <!-- Footer Sidebar -->
-        <div class="p-6 border-t border-white/10">
-            <button class="w-full py-2.5 rounded-full border border-spotify-text text-white font-bold hover:scale-105 hover:border-white transition action-btn text-sm" data-action="Déconnexion">
+        <div class="p-4 md:p-6 border-t border-white/10">
+            <button class="w-full py-2 md:py-2.5 rounded-full border border-spotify-text text-white font-bold hover:scale-105 hover:border-white transition action-btn text-xs md:text-sm" data-action="Déconnexion">
                 Se déconnecter
             </button>
         </div>
@@ -367,83 +430,98 @@
     <!-- Lightbox Overlay pour l'image en plein écran -->
     <div id="lightbox-overlay" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer p-4">
         <!-- Ajout de w-full max-w-[85vmin] md:max-w-[70vmin] aspect-square object-cover pour garantir le 1x1 cube -->
-        <img id="lightbox-image" src="" alt="Enlarged Cover" class="w-full max-w-[85vmin] md:max-w-[70vmin] aspect-square object-cover rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
+        <img id="lightbox-image" src="" alt="Enlarged Cover" class="w-full max-w-[95vmin] md:max-w-[70vmin] aspect-square object-cover rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
     </div>
 
-    <!-- Sticky Audio Player (Glassmorphism) -->
-    <footer class="glass-player fixed bottom-0 left-0 right-0 h-[90px] px-4 flex items-center justify-between z-50">
+    <!-- Sticky Audio Player (Spotify Mobile/Desktop Style) -->
+    <footer class="glass-player fixed bottom-0 left-0 right-0 md:h-[90px] px-2 md:px-4 flex flex-col md:flex-row items-center justify-between z-50 rounded-t-xl md:rounded-none m-1 md:m-0">
         
-        <!-- Left: Current Track Info -->
-        <div class="flex items-center gap-4 w-[30%] min-w-[180px]">
-            <div class="hidden sm:block w-14 h-14 relative group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105 cover-trigger">
-                <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover rounded shadow-sm">
-                <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center rounded">
-                    <i class="fas fa-expand text-white text-xs"></i>
-                </div>
+        <!-- Mobile Progress Bar (Top edge) -->
+        <div class="w-full h-1 bg-transparent relative md:hidden rounded-t-xl overflow-hidden mt-[-4px] mb-2 cursor-pointer" id="mobile-progress-container">
+            <div class="w-full h-0.5 bg-white/20 relative mt-[2px]">
+                <div id="mobile-progress-fill" class="h-full bg-white w-0 transition-colors"></div>
             </div>
-            <div class="flex flex-col justify-center truncate">
-                <button data-action="Navigation vers l'épisode" class="action-btn text-white text-sm hover:underline truncate text-left">La musique comme refuge</button>
-                <button data-action="Navigation vers le podcast" class="action-btn text-spotify-text text-xs hover:underline hover:text-white truncate text-left">After Hours</button>
-            </div>
-            <!-- Sync default unliked style applied here too -->
-            <button class="like-btn text-spotify-text hover:text-white hover:scale-105 transition ml-2 shrink-0">
-                <i class="far fa-heart text-sm"></i>
-            </button>
         </div>
 
-        <!-- Center: Playback Controls -->
-        <div class="flex flex-col items-center justify-center w-[40%] max-w-[722px] px-2">
-            <!-- Buttons -->
-            <div class="flex items-center gap-4 sm:gap-6 mb-2">
-                <button data-action="Lecture aléatoire activée/désactivée" class="action-btn text-spotify-text hover:text-white transition hidden sm:block"><i class="fas fa-random text-xs"></i></button>
-                <button data-action="Piste précédente" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-backward text-sm sm:text-lg"></i></button>
-                
-                <!-- Play Button -->
-                <button class="play-toggle-btn w-8 h-8 sm:w-8 sm:h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform">
-                    <i class="fas fa-play text-xs ml-0.5"></i>
-                </button>
-                
-                <button data-action="Piste suivante" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-forward text-sm sm:text-lg"></i></button>
-                <button data-action="Répétition activée/désactivée" class="action-btn text-spotify-text hover:text-white transition hidden sm:block"><i class="fas fa-redo text-xs"></i></button>
-            </div>
-            
-            <!-- Progress Bar -->
-            <div class="flex items-center gap-2 w-full">
-                <span id="current-time" class="text-[11px] text-spotify-text">00:00</span>
-                <div id="progress-container" data-action="Changement de la position de lecture" class="action-btn h-1 bg-white/20 rounded-full flex-1 group cursor-pointer flex items-center relative">
-                    <!-- Progress fill -->
-                    <div id="progress-fill" class="h-1 bg-white group-hover:bg-amber-500 w-0 rounded-full relative">
-                        <!-- Dragger handle -->
-                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+        <div class="w-full flex items-center justify-between py-1 pb-2 md:py-0">
+            <!-- Left: Current Track Info -->
+            <div class="flex items-center gap-3 md:gap-4 w-[65%] md:w-[30%] min-w-0 md:min-w-[180px]">
+                <div class="w-10 h-10 md:w-14 md:h-14 relative group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105 cover-trigger rounded overflow-hidden shadow-sm">
+                    <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center">
+                        <i class="fas fa-expand text-white text-[10px] md:text-xs"></i>
                     </div>
                 </div>
-                <span id="total-time" class="text-[11px] text-spotify-text">00:00</span>
+                <div class="flex flex-col justify-center min-w-0 pr-2">
+                    <button data-action="Navigation vers l'épisode" class="action-btn text-white text-xs md:text-sm hover:underline truncate text-left w-full">La musique comme refuge</button>
+                    <button data-action="Navigation vers le podcast" class="action-btn text-spotify-text text-[10px] md:text-xs hover:underline hover:text-white truncate text-left w-full">After Hours</button>
+                </div>
+                <!-- Like button (hidden on tiny screens, moved to right controls) -->
+                <button class="like-btn text-spotify-text active:text-white md:hover:text-white md:hover:scale-105 transition ml-1 shrink-0 hidden sm:block">
+                    <i class="far fa-heart text-xs md:text-sm"></i>
+                </button>
             </div>
-        </div>
 
-        <!-- Right: Extra Controls (Volume) -->
-        <div class="flex items-center justify-end gap-3 w-[30%] text-spotify-text pr-2">
-            <button data-action="File d'attente" class="action-btn hover:text-white transition hidden md:block"><i class="fas fa-list text-xs"></i></button>
-            <button id="mute-btn" class="action-btn hover:text-white transition"><i id="mute-icon" class="fas fa-volume-up text-xs"></i></button>
-            
-            <!-- Volume Bar without gray background on track -->
-            <div id="volume-container" class="hidden sm:flex w-20 md:w-24 h-1 group cursor-pointer items-center relative py-2 -my-2">
-                <!-- Wrapper for easy clicking (larger hit area) -->
-                <div class="w-full h-1 rounded-full relative pointer-events-none">
-                    <div id="volume-fill" style="width: 66%;" class="h-1 bg-white group-hover:bg-amber-500 rounded-full relative pointer-events-none transition-colors">
-                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+            <!-- Mobile Play Controls (Right aligned) -->
+            <div class="flex md:hidden items-center gap-4 shrink-0 pr-2">
+                <button class="like-btn text-spotify-text active:text-white transition">
+                    <i class="far fa-heart text-sm"></i>
+                </button>
+                <button class="play-toggle-btn text-white active:scale-95 transition-transform">
+                    <i class="fas fa-play text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Center: Desktop Playback Controls (Hidden on Mobile) -->
+            <div class="hidden md:flex flex-col items-center justify-center w-[40%] max-w-[722px] px-2">
+                <!-- Buttons -->
+                <div class="flex items-center gap-6 mb-2">
+                    <button id="shuffle-btn" class="text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-random text-xs"></i></button>
+                    <button data-action="Piste précédente" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-backward text-lg"></i></button>
+                    
+                    <!-- Play Button -->
+                    <button class="play-toggle-btn w-8 h-8 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 transition-transform">
+                        <i class="fas fa-play text-xs ml-0.5"></i>
+                    </button>
+                    
+                    <button data-action="Piste suivante" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-forward text-lg"></i></button>
+                    <button id="repeat-btn" class="text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-redo text-xs"></i></button>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="flex items-center gap-2 w-full">
+                    <span id="current-time" class="text-[11px] text-spotify-text min-w-[35px] text-right">00:00</span>
+                    <div id="progress-container" class="h-1 rounded-full flex-1 group cursor-pointer flex items-center relative py-2 -my-2">
+                        <div class="w-full h-1 bg-white/20 rounded-full relative pointer-events-none">
+                            <div id="progress-fill" class="h-full bg-white group-hover:bg-amber-500 w-0 rounded-full relative pointer-events-none transition-colors">
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="total-time" class="text-[11px] text-spotify-text min-w-[35px]">00:00</span>
+                </div>
+            </div>
+
+            <!-- Right: Extra Controls (Volume - Desktop Only) -->
+            <div class="hidden md:flex items-center justify-end gap-3 w-[30%] text-spotify-text pr-2">
+                <button data-action="File d'attente" class="action-btn hover:text-white transition"><i class="fas fa-list text-xs"></i></button>
+                <button id="mute-btn" class="action-btn hover:text-white transition"><i id="mute-icon" class="fas fa-volume-up text-xs"></i></button>
+                
+                <!-- Volume Bar -->
+                <div id="volume-container" class="w-24 h-1 group cursor-pointer items-center relative py-2 -my-2">
+                    <div class="w-full h-1 rounded-full relative pointer-events-none bg-white/20">
+                        <div id="volume-fill" style="width: 100%;" class="h-full bg-white group-hover:bg-amber-500 rounded-full relative pointer-events-none transition-colors">
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- Audio Element -->
-    <!-- Fallback source provided to prevent "No supported sources" error when testson.mp3 is missing locally -->
+    <!-- Audio Element avec une source en ligne fiable -->
     <audio id="main-audio" preload="metadata">
-        <source src="testson.mp3" type="audio/mpeg">
-        <!-- Adding a remote fallback in case the local file is not accessible -->
-        <source src="https://assets.mixkit.co/active_storage/sfx/120/120-preview.mp3" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Interactive Scripts -->
@@ -453,18 +531,39 @@
         const navTitle = document.getElementById('nav-title');
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 80) {
+            if (window.scrollY > 60) {
                 navbar.classList.add('glass-nav');
+                navbar.classList.add('border-white/5');
                 navbar.classList.remove('bg-transparent');
+                navbar.classList.remove('border-transparent');
                 navTitle.classList.remove('opacity-0');
                 navTitle.classList.add('opacity-100');
             } else {
                 navbar.classList.remove('glass-nav');
+                navbar.classList.remove('border-white/5');
                 navbar.classList.add('bg-transparent');
+                navbar.classList.add('border-transparent');
                 navTitle.classList.remove('opacity-100');
                 navTitle.classList.add('opacity-0');
             }
         });
+
+        // Hide default scrollbar completely for custom webkit styling
+        document.body.style.scrollbarWidth = "none";
+        document.body.classList.add('hide-scrollbar');
+        
+        // CSS added dynamically for hiding scrollbars but keeping functionality
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        `;
+        document.head.appendChild(style);
 
         // Logique du menu Profil latéral
         const profileSidebar = document.getElementById('profile-sidebar');
@@ -575,9 +674,11 @@
         const totalTimeEl = document.getElementById('total-time');
         const progressContainer = document.getElementById('progress-container');
         const progressFill = document.getElementById('progress-fill');
+        const mobileProgressContainer = document.getElementById('mobile-progress-container');
+        const mobileProgressFill = document.getElementById('mobile-progress-fill');
         
-        // Initialisation du volume
-        audioEl.volume = 0.66;
+        // Initialisation du volume à 100% au lieu de 66%
+        audioEl.volume = 1;
 
         function formatTime(seconds) {
             if (isNaN(seconds) || !isFinite(seconds)) return "00:00";
@@ -586,40 +687,99 @@
             return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
 
+        function updateDurations(duration) {
+            const formatted = formatTime(duration);
+            if (totalTimeEl) totalTimeEl.textContent = formatted;
+            const trackDurationText = document.getElementById('track-duration-text');
+            if (trackDurationText) trackDurationText.textContent = formatted;
+        }
+
         // Afficher la durée quand l'audio est prêt
         if (audioEl.readyState > 0) {
-            totalTimeEl.textContent = formatTime(audioEl.duration);
+            updateDurations(audioEl.duration);
         } else {
             audioEl.addEventListener('loadedmetadata', () => {
-                totalTimeEl.textContent = formatTime(audioEl.duration);
+                updateDurations(audioEl.duration);
             });
         }
 
         // Mettre à jour la progression pendant la lecture
         audioEl.addEventListener('timeupdate', () => {
-            currentTimeEl.textContent = formatTime(audioEl.currentTime);
+            if (currentTimeEl) currentTimeEl.textContent = formatTime(audioEl.currentTime);
             if (audioEl.duration) {
                 const percent = (audioEl.currentTime / audioEl.duration) * 100;
-                progressFill.style.width = `${percent}%`;
+                if (progressFill) progressFill.style.width = `${percent}%`;
+                if (mobileProgressFill) mobileProgressFill.style.width = `${percent}%`;
             }
         });
 
         // Remise à zéro à la fin
         audioEl.addEventListener('ended', () => {
-            isPlaying = false;
-            updatePlayButtonsState(false);
-            progressFill.style.width = '0%';
-            currentTimeEl.textContent = "00:00";
+            if (!audioEl.loop) {
+                isPlaying = false;
+                updatePlayButtonsState(false);
+                if (progressFill) progressFill.style.width = '0%';
+                if (mobileProgressFill) mobileProgressFill.style.width = '0%';
+                if (currentTimeEl) currentTimeEl.textContent = "00:00";
+            }
         });
 
-        // Clic sur la barre de progression pour avancer/reculer
+        // Fonction commune pour gérer le clic sur la barre de progression (Desktop et Mobile)
+        function handleProgressClick(e, container) {
+            e.stopPropagation();
+            const rect = container.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (audioEl.duration) {
+                audioEl.currentTime = pos * audioEl.duration;
+            }
+        }
+
+        // Clic sur la barre de progression (Desktop)
         if (progressContainer) {
             progressContainer.addEventListener('click', (e) => {
+                handleProgressClick(e, progressContainer);
+            });
+        }
+        
+        // Clic sur la barre de progression (Mobile)
+        if (mobileProgressContainer) {
+            mobileProgressContainer.addEventListener('click', (e) => {
+                handleProgressClick(e, mobileProgressContainer);
+            });
+        }
+
+        // Logique Boutons Aléatoire (Shuffle) et Boucle (Repeat)
+        const shuffleBtn = document.getElementById('shuffle-btn');
+        const repeatBtn = document.getElementById('repeat-btn');
+        let isShuffle = false;
+        let isRepeat = false;
+
+        if (shuffleBtn) {
+            shuffleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const rect = progressContainer.getBoundingClientRect();
-                const pos = (e.clientX - rect.left) / rect.width;
-                if (audioEl.duration) {
-                    audioEl.currentTime = pos * audioEl.duration;
+                isShuffle = !isShuffle;
+                if (isShuffle) {
+                    shuffleBtn.classList.remove('text-spotify-text', 'hover:text-white');
+                    shuffleBtn.classList.add('text-amber-500', 'hover:text-amber-400');
+                } else {
+                    shuffleBtn.classList.remove('text-amber-500', 'hover:text-amber-400');
+                    shuffleBtn.classList.add('text-spotify-text', 'hover:text-white');
+                }
+            });
+        }
+
+        if (repeatBtn) {
+            repeatBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                isRepeat = !isRepeat;
+                audioEl.loop = isRepeat; // Active la boucle native de l'élément audio
+                
+                if (isRepeat) {
+                    repeatBtn.classList.remove('text-spotify-text', 'hover:text-white');
+                    repeatBtn.classList.add('text-amber-500', 'hover:text-amber-400');
+                } else {
+                    repeatBtn.classList.remove('text-amber-500', 'hover:text-amber-400');
+                    repeatBtn.classList.add('text-spotify-text', 'hover:text-white');
                 }
             });
         }
@@ -628,16 +788,29 @@
         let isPlaying = false;
 
         function updatePlayButtonsState(playing) {
+            const trackRow = document.getElementById('main-track-row');
+            if (trackRow) {
+                if (playing) {
+                    trackRow.classList.add('active-track');
+                } else {
+                    trackRow.classList.remove('active-track');
+                }
+            }
+
             document.querySelectorAll('.play-toggle-btn i').forEach(icon => {
                 if (playing) {
                     icon.classList.remove('fa-play', 'ml-1', 'ml-0.5');
                     icon.classList.add('fa-pause');
                 } else {
                     icon.classList.remove('fa-pause');
-                    icon.classList.add('fa-play', 'ml-1');
-                    // Specific fix for the main player button alignment
-                    if (icon.parentElement.classList.contains('bg-white')) {
-                        icon.classList.remove('ml-1');
+                    icon.classList.add('fa-play');
+                    // Add alignment padding based on parent element to keep things centered
+                    if (icon.parentElement.classList.contains('w-14') || icon.parentElement.classList.contains('w-16') || icon.parentElement.classList.contains('w-12') || icon.parentElement.classList.contains('text-white')) {
+                        // Ignore mobile text-only button
+                        if(!icon.parentElement.classList.contains('text-white') || icon.parentElement.classList.contains('bg-white')){
+                             icon.classList.add('ml-1');
+                        }
+                    } else if (icon.parentElement.classList.contains('w-8')) {
                         icon.classList.add('ml-0.5');
                     }
                 }
@@ -654,7 +827,6 @@
                         updatePlayButtonsState(true);
                     }).catch(err => {
                         console.error("La lecture audio a échoué:", err);
-                        alert("Le fichier audio (testson.mp3) n'a pas pu être chargé. Assurez-vous que le fichier est présent dans le même dossier.");
                     });
                 } else {
                     audioEl.pause();
@@ -663,6 +835,43 @@
                 }
             });
         });
+
+        // Double clic sur la ligne de piste
+        const mainTrackRow = document.getElementById('main-track-row');
+        if (mainTrackRow) {
+            mainTrackRow.addEventListener('click', (e) => {
+                // On mobile, a single tap on the track row should play (since hover doesn't exist)
+                if (window.innerWidth < 768 && !e.target.closest('.play-toggle-btn')) {
+                     if (audioEl.paused) {
+                        audioEl.play().then(() => {
+                            isPlaying = true;
+                            updatePlayButtonsState(true);
+                        }).catch(err => console.error(err));
+                    } else {
+                        audioEl.pause();
+                        isPlaying = false;
+                        updatePlayButtonsState(false);
+                    }
+                }
+            });
+            
+            mainTrackRow.addEventListener('dblclick', (e) => {
+                if (window.innerWidth >= 768) {
+                    if (e.target.closest('.play-toggle-btn')) return; 
+                    
+                    if (audioEl.paused) {
+                        audioEl.play().then(() => {
+                            isPlaying = true;
+                            updatePlayButtonsState(true);
+                        }).catch(err => console.error(err));
+                    } else {
+                        audioEl.pause();
+                        isPlaying = false;
+                        updatePlayButtonsState(false);
+                    }
+                }
+            });
+        }
 
         // Like (Heart) Toggle Logic Global State Sync
         let isGlobalLiked = false; // Initialisé à faux pour qu'aucun ne soit liké
@@ -691,31 +900,33 @@
             });
         });
 
-        // Volume Interaction Logic
+        // Volume Interaction Logic (Desktop Only)
         const muteBtn = document.getElementById('mute-btn');
         const muteIcon = document.getElementById('mute-icon');
         const volumeContainer = document.getElementById('volume-container');
         const volumeFill = document.getElementById('volume-fill');
         
-        let currentVolume = 0.66;
-        let previousVolume = 0.66;
+        let currentVolume = 1; // Changé de 0.66 à 1 pour correspondre à la barre pleine
+        let previousVolume = 1;
         let isDraggingVolume = false;
 
         function updateVolumeVisuals(vol) {
             // Mise à jour de la barre visuelle
-            volumeFill.style.width = `${vol * 100}%`;
+            if (volumeFill) volumeFill.style.width = `${vol * 100}%`;
             
             // Mise à jour réelle du volume de l'audio
             audioEl.volume = vol;
             
             // Mise à jour de l'icône
-            muteIcon.className = 'text-xs fas ';
-            if (vol === 0) {
-                muteIcon.classList.add('fa-volume-mute');
-            } else if (vol < 0.5) {
-                muteIcon.classList.add('fa-volume-down');
-            } else {
-                muteIcon.classList.add('fa-volume-up');
+            if (muteIcon) {
+                muteIcon.className = 'text-xs fas ';
+                if (vol === 0) {
+                    muteIcon.classList.add('fa-volume-mute');
+                } else if (vol < 0.5) {
+                    muteIcon.classList.add('fa-volume-down');
+                } else {
+                    muteIcon.classList.add('fa-volume-up');
+                }
             }
         }
 
@@ -727,7 +938,7 @@
                     previousVolume = currentVolume;
                     currentVolume = 0;
                 } else {
-                    currentVolume = previousVolume > 0 ? previousVolume : 0.66;
+                    currentVolume = previousVolume > 0 ? previousVolume : 1;
                 }
                 updateVolumeVisuals(currentVolume);
             });
@@ -735,6 +946,7 @@
 
         // Ajustement du volume au clic ou au glissement
         function setVolumeFromEvent(e) {
+            if (!volumeContainer) return;
             const rect = volumeContainer.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let vol = x / rect.width;
