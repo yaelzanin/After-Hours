@@ -50,11 +50,19 @@
             color: #ffffff;
             /* Padding bottom to ensure content isn't hidden behind the fixed player */
             padding-bottom: 70px; /* Reduced for mobile */
+            /* Prevent accidental text selection on mobile */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            /* Prevent tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
         
         @media (min-width: 640px) {
             body {
                 padding-bottom: 90px; /* Desktop padding */
+                /* Allow selection on desktop if needed, though app-like implies none */
             }
         }
 
@@ -149,6 +157,14 @@
                 display: flex !important;
             }
         }
+
+        /* Allow selection in specific areas if needed */
+        .selectable {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-amber-900 selection:text-white overscroll-none">
@@ -189,7 +205,7 @@
                 <div class="w-56 h-56 sm:w-48 sm:h-48 md:w-56 md:h-56 shrink-0 shadow-[0_8px_24px_rgba(0,0,0,0.5)] bg-spotify-elevated rounded cursor-pointer transition-transform duration-300 md:hover:scale-105 cover-trigger">
                     <img src="minia.jpg" 
                          alt="Cover After Hours" 
-                         class="w-full h-full object-cover rounded">
+                         class="w-full h-full object-cover rounded pointer-events-none">
                 </div>
                 
                 <!-- Text Info -->
@@ -202,11 +218,11 @@
                     
                     <div class="flex items-center justify-center md:justify-start gap-2 text-xs md:text-sm text-white/90 font-medium flex-wrap">
                         <span class="w-5 h-5 md:w-6 md:h-6 rounded-full overflow-hidden inline-block align-middle">
-                            <img src="https://placehold.co/100x100/282828/f59e0b?text=A" alt="Axel" class="w-full h-full object-cover">
+                            <img src="https://placehold.co/100x100/282828/f59e0b?text=A" alt="Axel" class="w-full h-full object-cover pointer-events-none">
                         </span>
                         <button data-action="Profil de Axel" class="action-btn hover:underline cursor-pointer">Axel</button>  
                         <span class="w-5 h-5 md:w-6 md:h-6 rounded-full overflow-hidden inline-block align-middle ml-1">
-                            <img src="https://placehold.co/100x100/282828/f59e0b?text=Y" alt="Yaël" class="w-full h-full object-cover">
+                            <img src="https://placehold.co/100x100/282828/f59e0b?text=Y" alt="Yaël" class="w-full h-full object-cover pointer-events-none">
                         </span>
                         <button data-action="Profil de Yaël" class="action-btn hover:underline cursor-pointer">Yaël</button>
                     </div>
@@ -257,7 +273,7 @@
                         
                         <!-- Thumbnail for mobile, Number for desktop -->
                         <div class="w-12 h-12 md:w-auto md:h-auto flex-shrink-0 relative rounded overflow-hidden md:overflow-visible">
-                            <img src="minia.jpg" class="w-full h-full object-cover md:hidden" alt="Thumbnail">
+                            <img src="minia.jpg" class="w-full h-full object-cover md:hidden pointer-events-none" alt="Thumbnail">
                             <div class="hidden md:flex text-center text-spotify-text w-full justify-center items-center">
                                 <span class="track-num">1</span>
                                 <button class="track-play hidden justify-center text-white play-toggle-btn items-center hover:scale-110 transition-transform"><i class="fas fa-play text-xs"></i></button>
@@ -284,7 +300,7 @@
                     <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">À propos</h2>
                     <div id="about-trigger" class="glass-panel rounded-xl p-4 md:p-8 active:bg-white/10 md:hover:bg-white/5 transition-colors max-w-3xl cursor-pointer group">
                         <div class="flex items-start md:items-center justify-between">
-                            <p class="text-spotify-text leading-relaxed text-sm md:text-base font-medium pr-4 line-clamp-3 md:line-clamp-none">
+                            <p class="text-spotify-text leading-relaxed text-sm md:text-base font-medium pr-4 line-clamp-3 md:line-clamp-none selectable">
                                 Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel. Nous y partageons nos dernières pépites vinyles...
                             </p>
                             <span class="text-white/30 group-hover:text-white transition-colors mt-1 md:mt-0 flex-shrink-0"><i class="fas fa-chevron-right md:fa-expand-alt text-xs md:text-base"></i></span>
@@ -304,7 +320,7 @@
                             <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Axel" 
                                      alt="Axel" 
-                                     class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+                                     class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)] pointer-events-none">
                             </div>
                             <h3 class="font-bold text-white text-sm md:text-base truncate">Axel</h3>
                             <p class="text-xs md:text-sm text-spotify-text truncate mt-0.5 md:mt-1">Digger & Réal</p>
@@ -315,7 +331,7 @@
                             <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Ya%C3%ABl" 
                                      alt="Yaël" 
-                                     class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+                                     class="w-full aspect-square rounded-full object-cover shadow-[0_8px_24px_rgba(0,0,0,0.5)] pointer-events-none">
                             </div>
                             <h3 class="font-bold text-white text-sm md:text-base truncate">Yaël</h3>
                             <p class="text-xs md:text-sm text-spotify-text truncate mt-0.5 md:mt-1">Curateur & Voix</p>
@@ -350,7 +366,7 @@
             <!-- Texte descriptif (poussé à droite sur desktop, centré sur mobile) -->
             <div class="mt-auto md:mt-0 w-full md:w-1/2 ml-auto p-6 md:p-12 flex flex-col justify-center relative z-10 h-2/3 md:h-full">
                 <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-white drop-shadow-md">À propos</h2>
-                <div class="space-y-3 md:space-y-4 overflow-y-auto pb-8 md:pb-0">
+                <div class="space-y-3 md:space-y-4 overflow-y-auto pb-8 md:pb-0 selectable">
                     <p class="text-spotify-text leading-relaxed text-sm md:text-lg">
                         Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel.
                     </p>
@@ -382,7 +398,7 @@
                 GM
             </div>
             <div class="overflow-hidden">
-                <h3 class="font-bold text-white text-sm md:text-base truncate">Guillaume Malvoisin</h3>
+                <h3 class="font-bold text-white text-sm md:text-base truncate selectable">Guillaume Malvoisin</h3>
                 <span class="inline-block mt-0.5 md:mt-1 px-1.5 md:px-2 py-0.5 bg-white/10 rounded text-[9px] md:text-[10px] font-bold tracking-wider uppercase text-spotify-text">Premium</span>
             </div>
         </div>
@@ -430,31 +446,25 @@
     <!-- Lightbox Overlay pour l'image en plein écran -->
     <div id="lightbox-overlay" class="fixed inset-0 bg-black/95 z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 cursor-pointer p-4">
         <!-- Ajout de w-full max-w-[85vmin] md:max-w-[70vmin] aspect-square object-cover pour garantir le 1x1 cube -->
-        <img id="lightbox-image" src="" alt="Enlarged Cover" class="w-full max-w-[95vmin] md:max-w-[70vmin] aspect-square object-cover rounded-xl shadow-2xl transform scale-95 transition-transform duration-300">
+        <img id="lightbox-image" src="" alt="Enlarged Cover" class="w-full max-w-[95vmin] md:max-w-[70vmin] aspect-square object-cover rounded-xl shadow-2xl transform scale-95 transition-transform duration-300 pointer-events-none">
     </div>
 
     <!-- Sticky Audio Player (Spotify Mobile/Desktop Style) -->
-    <footer class="glass-player fixed bottom-0 left-0 right-0 md:h-[90px] px-2 md:px-4 flex flex-col md:flex-row items-center justify-between z-50 rounded-t-xl md:rounded-none m-1 md:m-0">
+    <!-- Added id to footer to serve as mobile trigger area -->
+    <footer id="mobile-player-trigger" class="glass-player fixed bottom-0 left-0 right-0 md:h-[90px] px-2 md:px-4 z-50 rounded-xl md:rounded-none m-1 md:m-0 overflow-hidden cursor-pointer md:cursor-auto flex flex-col justify-center">
         
-        <!-- Mobile Progress Bar (Top edge) -->
-        <div class="w-full h-1 bg-transparent relative md:hidden rounded-t-xl overflow-hidden mt-[-4px] mb-2 cursor-pointer" id="mobile-progress-container">
-            <div class="w-full h-0.5 bg-white/20 relative mt-[2px]">
-                <div id="mobile-progress-fill" class="h-full bg-white w-0 transition-colors"></div>
-            </div>
-        </div>
-
-        <div class="w-full flex items-center justify-between py-1 pb-2 md:py-0">
+        <div class="w-full flex items-center justify-between py-2 md:py-0 relative z-10">
             <!-- Left: Current Track Info -->
             <div class="flex items-center gap-3 md:gap-4 w-[65%] md:w-[30%] min-w-0 md:min-w-[180px]">
                 <div class="w-10 h-10 md:w-14 md:h-14 relative group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105 cover-trigger rounded overflow-hidden shadow-sm">
-                    <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover">
+                    <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover pointer-events-none">
                     <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center">
-                        <i class="fas fa-expand text-white text-[10px] md:text-xs"></i>
+                        <i class="fas fa-expand text-white text-[10px] md:text-xs pointer-events-none"></i>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center min-w-0 pr-2">
-                    <button data-action="Navigation vers l'épisode" class="action-btn text-white text-xs md:text-sm hover:underline truncate text-left w-full">La musique comme refuge</button>
-                    <button data-action="Navigation vers le podcast" class="action-btn text-spotify-text text-[10px] md:text-xs hover:underline hover:text-white truncate text-left w-full">After Hours</button>
+                    <button data-action="Navigation vers l'épisode" class="action-btn text-white text-xs md:text-sm md:hover:underline truncate text-left w-full text-shadow-sm">La musique comme refuge</button>
+                    <button data-action="Navigation vers le podcast" class="action-btn text-spotify-text text-[10px] md:text-xs md:hover:underline hover:text-white truncate text-left w-full">After Hours</button>
                 </div>
                 <!-- Like button (hidden on tiny screens, moved to right controls) -->
                 <button class="like-btn text-spotify-text active:text-white md:hover:text-white md:hover:scale-105 transition ml-1 shrink-0 hidden sm:block">
@@ -464,10 +474,10 @@
 
             <!-- Mobile Play Controls (Right aligned) -->
             <div class="flex md:hidden items-center gap-4 shrink-0 pr-2">
-                <button class="like-btn text-spotify-text active:text-white transition">
+                <button class="like-btn text-spotify-text active:text-white transition p-2 -m-2">
                     <i class="far fa-heart text-sm"></i>
                 </button>
-                <button class="play-toggle-btn text-white active:scale-95 transition-transform">
+                <button class="play-toggle-btn text-white active:scale-95 transition-transform p-2 -m-2">
                     <i class="fas fa-play text-xl"></i>
                 </button>
             </div>
@@ -476,7 +486,7 @@
             <div class="hidden md:flex flex-col items-center justify-center w-[40%] max-w-[722px] px-2">
                 <!-- Buttons -->
                 <div class="flex items-center gap-6 mb-2">
-                    <button id="shuffle-btn" class="text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-random text-xs"></i></button>
+                    <button class="shuffle-toggle-btn text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-random text-xs"></i></button>
                     <button data-action="Piste précédente" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-backward text-lg"></i></button>
                     
                     <!-- Play Button -->
@@ -485,7 +495,7 @@
                     </button>
                     
                     <button data-action="Piste suivante" class="action-btn text-spotify-text hover:text-white transition"><i class="fas fa-step-forward text-lg"></i></button>
-                    <button id="repeat-btn" class="text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-redo text-xs"></i></button>
+                    <button class="repeat-toggle-btn text-spotify-text hover:text-white transition hover:scale-105"><i class="fas fa-redo text-xs"></i></button>
                 </div>
                 
                 <!-- Progress Bar -->
@@ -517,7 +527,74 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Progress Bar (Bottom edge) -->
+        <div class="w-full h-[2px] bg-white/10 absolute bottom-0 left-0 md:hidden" id="mobile-progress-container">
+            <div id="mobile-progress-fill" class="h-full bg-white w-0 transition-colors"></div>
+        </div>
     </footer>
+
+    <!-- Full Screen Mobile Player (Slide-up modal) -->
+    <!-- Added id for swipe logic -->
+    <div id="full-mobile-player" class="fixed inset-0 bg-gradient-to-b from-[#4a2e13] to-[#121212] z-[100] transform translate-y-full transition-transform duration-300 flex flex-col px-6 pb-12 pt-12 md:hidden">
+        
+        <!-- Drag Handle Area (for visual cue and easier swiping) -->
+        <div id="drag-handle-area" class="absolute top-0 left-0 w-full h-16 flex justify-center pt-3 cursor-grab active:cursor-grabbing">
+            <div class="w-10 h-1 bg-white/30 rounded-full"></div>
+        </div>
+
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-10 relative z-10">
+            <button id="close-full-player" class="text-white p-2 -ml-2 active:opacity-70 transition-opacity"><i class="fas fa-chevron-down text-xl"></i></button>
+            <span class="text-xs font-bold uppercase tracking-widest text-white">After Hours</span>
+            <button class="text-white p-2 -mr-2"><i class="fas fa-ellipsis-h"></i></button>
+        </div>
+        
+        <!-- Large Cover Art -->
+        <div class="w-full aspect-square shadow-2xl rounded-lg overflow-hidden mb-10 bg-[#181818] relative z-10">
+            <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover pointer-events-none">
+        </div>
+        
+        <!-- Info & Like -->
+        <div class="flex justify-between items-end mb-8 relative z-10">
+            <div class="flex flex-col pr-4 overflow-hidden">
+                <h2 class="text-2xl font-bold text-white mb-1 truncate">La musique comme refuge</h2>
+                <p class="text-spotify-text text-base truncate">After Hours</p>
+            </div>
+            <button class="like-btn text-spotify-text active:text-white transition pb-1 text-2xl flex-shrink-0">
+                <i class="far fa-heart"></i>
+            </button>
+        </div>
+        
+        <!-- Interactive Progress Bar -->
+        <div class="mb-8 mt-auto relative z-10">
+            <div id="full-progress-container" class="h-1 bg-transparent rounded-full w-full cursor-pointer relative py-4 -my-4 flex items-center">
+                <div class="w-full h-1 rounded-full relative pointer-events-none">
+                    <div id="full-progress-fill" class="h-full bg-white rounded-full relative pointer-events-none transition-colors w-0">
+                        <!-- Dragger handle always visible on mobile full player -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between text-spotify-text text-xs mt-3 font-medium tracking-wide">
+                <span id="full-current-time">00:00</span>
+                <span id="full-total-time">00:00</span>
+            </div>
+        </div>
+        
+        <!-- Big Playback Controls -->
+        <div class="flex justify-between items-center px-2 relative z-10">
+            <button class="shuffle-toggle-btn text-spotify-text active:text-white transition"><i class="fas fa-random text-2xl"></i></button>
+            <button class="text-white active:opacity-70 transition"><i class="fas fa-step-backward text-4xl"></i></button>
+            
+            <button class="play-toggle-btn w-20 h-20 rounded-full bg-amber-500 text-black flex items-center justify-center transition-transform active:scale-95 shadow-xl">
+                <i class="fas fa-play text-3xl ml-1.5"></i>
+            </button>
+            
+            <button class="text-white active:opacity-70 transition"><i class="fas fa-step-forward text-4xl"></i></button>
+            <button class="repeat-toggle-btn text-spotify-text active:text-white transition"><i class="fas fa-redo text-2xl"></i></button>
+        </div>
+    </div>
 
     <!-- Audio Element avec une source en ligne fiable -->
     <audio id="main-audio" preload="metadata">
@@ -526,6 +603,9 @@
 
     <!-- Interactive Scripts -->
     <script>
+        // Prevent accidental selections and context menus on long press (mobile)
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
         // Navbar Glassmorphism Background on Scroll
         const navbar = document.getElementById('navbar');
         const navTitle = document.getElementById('nav-title');
@@ -635,13 +715,16 @@
             });
         }
 
-        // Logique de la Lightbox pour les images de couverture
+        // Logique de la Lightbox pour les images de couverture (Desktop mainly)
         const lightboxOverlay = document.getElementById('lightbox-overlay');
         const lightboxImage = document.getElementById('lightbox-image');
         const coverTriggers = document.querySelectorAll('.cover-trigger');
 
         coverTriggers.forEach(trigger => {
             trigger.addEventListener('click', (e) => {
+                // Ignore hover zoom if on mobile (handled by slide up full player)
+                if (window.innerWidth < 768) return;
+                
                 e.stopPropagation();
                 const img = trigger.querySelector('img');
                 if (img) {
@@ -668,16 +751,101 @@
             });
         }
 
+        // Open Full Screen Mobile Player Logic
+        const mobilePlayerTrigger = document.getElementById('mobile-player-trigger');
+        const fullMobilePlayer = document.getElementById('full-mobile-player');
+        const closeFullPlayerBtn = document.getElementById('close-full-player');
+
+        function closeFullPlayer() {
+            fullMobilePlayer.style.transform = ''; // Clear inline styles from dragging
+            fullMobilePlayer.classList.add('translate-y-full');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        if (mobilePlayerTrigger && fullMobilePlayer) {
+            mobilePlayerTrigger.addEventListener('click', (e) => {
+                if (window.innerWidth >= 768) return; // Desktop ignore this
+                
+                // Prevent opening if interacting with play or like buttons inside the collapsed bar
+                if (e.target.closest('.play-toggle-btn') || e.target.closest('.like-btn')) return;
+                
+                fullMobilePlayer.classList.remove('translate-y-full');
+                fullMobilePlayer.style.transition = 'transform 0.3s ease-out'; // Ensure smooth open
+                document.body.style.overflow = 'hidden'; // Lock background scrolling
+            });
+        }
+
+        if (closeFullPlayerBtn && fullMobilePlayer) {
+            closeFullPlayerBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                closeFullPlayer();
+            });
+        }
+
+        // Swipe Down Logic to Close Full Player
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        if (fullMobilePlayer) {
+            fullMobilePlayer.addEventListener('touchstart', (e) => {
+                // Only start drag if we aren't interacting with progress bar or buttons
+                if(e.target.closest('#full-progress-container') || e.target.closest('button')) return;
+                
+                startY = e.touches[0].clientY;
+                isDragging = true;
+                fullMobilePlayer.style.transition = 'none'; // Remove transition for 1:1 drag
+            }, { passive: true });
+
+            fullMobilePlayer.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                
+                currentY = e.touches[0].clientY;
+                const deltaY = currentY - startY;
+
+                // Only allow swiping down
+                if (deltaY > 0) {
+                    fullMobilePlayer.style.transform = `translateY(${deltaY}px)`;
+                }
+            }, { passive: true });
+
+            fullMobilePlayer.addEventListener('touchend', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                const deltaY = currentY - startY;
+                fullMobilePlayer.style.transition = 'transform 0.3s ease-out';
+
+                // If swiped down more than 100px, close it. Otherwise, snap back.
+                if (deltaY > 100) {
+                    closeFullPlayer();
+                } else {
+                    fullMobilePlayer.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+
         // Configuration Audio & Progression
         const audioEl = document.getElementById('main-audio');
+        
+        // Progress text elements
         const currentTimeEl = document.getElementById('current-time');
         const totalTimeEl = document.getElementById('total-time');
-        const progressContainer = document.getElementById('progress-container');
-        const progressFill = document.getElementById('progress-fill');
-        const mobileProgressContainer = document.getElementById('mobile-progress-container');
-        const mobileProgressFill = document.getElementById('mobile-progress-fill');
+        const fullCurrentTimeEl = document.getElementById('full-current-time');
+        const fullTotalTimeEl = document.getElementById('full-total-time');
         
-        // Initialisation du volume à 100% au lieu de 66%
+        // Progress bar container elements
+        const progressContainer = document.getElementById('progress-container');
+        const mobileProgressContainer = document.getElementById('mobile-progress-container');
+        const fullProgressContainer = document.getElementById('full-progress-container');
+        
+        // Progress fill elements
+        const progressFill = document.getElementById('progress-fill');
+        const mobileProgressFill = document.getElementById('mobile-progress-fill');
+        const fullProgressFill = document.getElementById('full-progress-fill');
+        
+        // Initialisation du volume à 100%
         audioEl.volume = 1;
 
         function formatTime(seconds) {
@@ -690,6 +858,7 @@
         function updateDurations(duration) {
             const formatted = formatTime(duration);
             if (totalTimeEl) totalTimeEl.textContent = formatted;
+            if (fullTotalTimeEl) fullTotalTimeEl.textContent = formatted;
             const trackDurationText = document.getElementById('track-duration-text');
             if (trackDurationText) trackDurationText.textContent = formatted;
         }
@@ -705,11 +874,15 @@
 
         // Mettre à jour la progression pendant la lecture
         audioEl.addEventListener('timeupdate', () => {
-            if (currentTimeEl) currentTimeEl.textContent = formatTime(audioEl.currentTime);
+            const currentFormatted = formatTime(audioEl.currentTime);
+            if (currentTimeEl) currentTimeEl.textContent = currentFormatted;
+            if (fullCurrentTimeEl) fullCurrentTimeEl.textContent = currentFormatted;
+            
             if (audioEl.duration) {
                 const percent = (audioEl.currentTime / audioEl.duration) * 100;
                 if (progressFill) progressFill.style.width = `${percent}%`;
                 if (mobileProgressFill) mobileProgressFill.style.width = `${percent}%`;
+                if (fullProgressFill) fullProgressFill.style.width = `${percent}%`;
             }
         });
 
@@ -720,11 +893,13 @@
                 updatePlayButtonsState(false);
                 if (progressFill) progressFill.style.width = '0%';
                 if (mobileProgressFill) mobileProgressFill.style.width = '0%';
+                if (fullProgressFill) fullProgressFill.style.width = '0%';
                 if (currentTimeEl) currentTimeEl.textContent = "00:00";
+                if (fullCurrentTimeEl) fullCurrentTimeEl.textContent = "00:00";
             }
         });
 
-        // Fonction commune pour gérer le clic sur la barre de progression (Desktop et Mobile)
+        // Fonction commune pour gérer le clic sur la barre de progression
         function handleProgressClick(e, container) {
             e.stopPropagation();
             const rect = container.getBoundingClientRect();
@@ -734,55 +909,54 @@
             }
         }
 
-        // Clic sur la barre de progression (Desktop)
+        // Écouteurs pour les clics sur la progression
         if (progressContainer) {
-            progressContainer.addEventListener('click', (e) => {
-                handleProgressClick(e, progressContainer);
-            });
+            progressContainer.addEventListener('click', (e) => handleProgressClick(e, progressContainer));
         }
-        
-        // Clic sur la barre de progression (Mobile)
+        if (fullProgressContainer) {
+            fullProgressContainer.addEventListener('click', (e) => handleProgressClick(e, fullProgressContainer));
+        }
+        // Mobile tiny progress bar isn't really tall enough to seek on easily, but just in case
         if (mobileProgressContainer) {
-            mobileProgressContainer.addEventListener('click', (e) => {
-                handleProgressClick(e, mobileProgressContainer);
-            });
+            mobileProgressContainer.addEventListener('click', (e) => handleProgressClick(e, mobileProgressContainer));
         }
 
-        // Logique Boutons Aléatoire (Shuffle) et Boucle (Repeat)
-        const shuffleBtn = document.getElementById('shuffle-btn');
-        const repeatBtn = document.getElementById('repeat-btn');
+        // Logique Boutons Aléatoire (Shuffle) et Boucle (Repeat) globaux
         let isShuffle = false;
         let isRepeat = false;
 
-        if (shuffleBtn) {
-            shuffleBtn.addEventListener('click', (e) => {
+        document.querySelectorAll('.shuffle-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 isShuffle = !isShuffle;
-                if (isShuffle) {
-                    shuffleBtn.classList.remove('text-spotify-text', 'hover:text-white');
-                    shuffleBtn.classList.add('text-amber-500', 'hover:text-amber-400');
-                } else {
-                    shuffleBtn.classList.remove('text-amber-500', 'hover:text-amber-400');
-                    shuffleBtn.classList.add('text-spotify-text', 'hover:text-white');
-                }
+                document.querySelectorAll('.shuffle-toggle-btn').forEach(b => {
+                    if (isShuffle) {
+                        b.classList.remove('text-spotify-text', 'hover:text-white');
+                        b.classList.add('text-amber-500', 'hover:text-amber-400');
+                    } else {
+                        b.classList.remove('text-amber-500', 'hover:text-amber-400');
+                        b.classList.add('text-spotify-text', 'hover:text-white');
+                    }
+                });
             });
-        }
+        });
 
-        if (repeatBtn) {
-            repeatBtn.addEventListener('click', (e) => {
+        document.querySelectorAll('.repeat-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 isRepeat = !isRepeat;
-                audioEl.loop = isRepeat; // Active la boucle native de l'élément audio
-                
-                if (isRepeat) {
-                    repeatBtn.classList.remove('text-spotify-text', 'hover:text-white');
-                    repeatBtn.classList.add('text-amber-500', 'hover:text-amber-400');
-                } else {
-                    repeatBtn.classList.remove('text-amber-500', 'hover:text-amber-400');
-                    repeatBtn.classList.add('text-spotify-text', 'hover:text-white');
-                }
+                audioEl.loop = isRepeat;
+                document.querySelectorAll('.repeat-toggle-btn').forEach(b => {
+                    if (isRepeat) {
+                        b.classList.remove('text-spotify-text', 'hover:text-white');
+                        b.classList.add('text-amber-500', 'hover:text-amber-400');
+                    } else {
+                        b.classList.remove('text-amber-500', 'hover:text-amber-400');
+                        b.classList.add('text-spotify-text', 'hover:text-white');
+                    }
+                });
             });
-        }
+        });
 
         // Play / Pause Toggle Logic
         let isPlaying = false;
@@ -799,19 +973,21 @@
 
             document.querySelectorAll('.play-toggle-btn i').forEach(icon => {
                 if (playing) {
-                    icon.classList.remove('fa-play', 'ml-1', 'ml-0.5');
+                    icon.classList.remove('fa-play', 'ml-1', 'ml-0.5', 'ml-1.5');
                     icon.classList.add('fa-pause');
                 } else {
                     icon.classList.remove('fa-pause');
                     icon.classList.add('fa-play');
-                    // Add alignment padding based on parent element to keep things centered
-                    if (icon.parentElement.classList.contains('w-14') || icon.parentElement.classList.contains('w-16') || icon.parentElement.classList.contains('w-12') || icon.parentElement.classList.contains('text-white')) {
-                        // Ignore mobile text-only button
+                    // Gérer l'alignement de l'icône "Play" selon la taille du bouton
+                    if (icon.parentElement.classList.contains('w-20')) {
+                         icon.classList.add('ml-1.5'); // Big player
+                    } else if (icon.parentElement.classList.contains('w-14') || icon.parentElement.classList.contains('w-16') || icon.parentElement.classList.contains('w-12') || icon.parentElement.classList.contains('text-white')) {
+                        // Ignore mobile text-only button inside the track row
                         if(!icon.parentElement.classList.contains('text-white') || icon.parentElement.classList.contains('bg-white')){
                              icon.classList.add('ml-1');
                         }
                     } else if (icon.parentElement.classList.contains('w-8')) {
-                        icon.classList.add('ml-0.5');
+                        icon.classList.add('ml-0.5'); // Small desktop player
                     }
                 }
             });
@@ -819,15 +995,13 @@
 
         document.querySelectorAll('.play-toggle-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent triggering parent action-btn
+                e.stopPropagation();
                 
                 if (audioEl.paused) {
                     audioEl.play().then(() => {
                         isPlaying = true;
                         updatePlayButtonsState(true);
-                    }).catch(err => {
-                        console.error("La lecture audio a échoué:", err);
-                    });
+                    }).catch(err => console.error("La lecture audio a échoué:", err));
                 } else {
                     audioEl.pause();
                     isPlaying = false;
@@ -840,7 +1014,6 @@
         const mainTrackRow = document.getElementById('main-track-row');
         if (mainTrackRow) {
             mainTrackRow.addEventListener('click', (e) => {
-                // On mobile, a single tap on the track row should play (since hover doesn't exist)
                 if (window.innerWidth < 768 && !e.target.closest('.play-toggle-btn')) {
                      if (audioEl.paused) {
                         audioEl.play().then(() => {
@@ -858,7 +1031,6 @@
             mainTrackRow.addEventListener('dblclick', (e) => {
                 if (window.innerWidth >= 768) {
                     if (e.target.closest('.play-toggle-btn')) return; 
-                    
                     if (audioEl.paused) {
                         audioEl.play().then(() => {
                             isPlaying = true;
@@ -879,10 +1051,8 @@
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 
-                // Toggle the global state
                 isGlobalLiked = !isGlobalLiked;
                 
-                // Update ALL like buttons to reflect the global state
                 document.querySelectorAll('.like-btn').forEach(anyBtn => {
                     const icon = anyBtn.querySelector('i');
                     if (isGlobalLiked) {
@@ -906,18 +1076,13 @@
         const volumeContainer = document.getElementById('volume-container');
         const volumeFill = document.getElementById('volume-fill');
         
-        let currentVolume = 1; // Changé de 0.66 à 1 pour correspondre à la barre pleine
+        let currentVolume = 1;
         let previousVolume = 1;
         let isDraggingVolume = false;
 
         function updateVolumeVisuals(vol) {
-            // Mise à jour de la barre visuelle
             if (volumeFill) volumeFill.style.width = `${vol * 100}%`;
-            
-            // Mise à jour réelle du volume de l'audio
             audioEl.volume = vol;
-            
-            // Mise à jour de l'icône
             if (muteIcon) {
                 muteIcon.className = 'text-xs fas ';
                 if (vol === 0) {
@@ -930,7 +1095,6 @@
             }
         }
 
-        // Mute / Unmute au clic sur l'icône
         if (muteBtn) {
             muteBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -944,20 +1108,15 @@
             });
         }
 
-        // Ajustement du volume au clic ou au glissement
         function setVolumeFromEvent(e) {
             if (!volumeContainer) return;
             const rect = volumeContainer.getBoundingClientRect();
             let x = e.clientX - rect.left;
             let vol = x / rect.width;
-            
-            // Clamping entre 0 et 1
             if (vol < 0) vol = 0;
             if (vol > 1) vol = 1;
-            
             currentVolume = vol;
             if (vol > 0) previousVolume = vol;
-            
             updateVolumeVisuals(vol);
         }
 
@@ -967,13 +1126,9 @@
                 isDraggingVolume = true;
                 setVolumeFromEvent(e);
             });
-            
             window.addEventListener('mousemove', (e) => {
-                if (isDraggingVolume) {
-                    setVolumeFromEvent(e);
-                }
+                if (isDraggingVolume) setVolumeFromEvent(e);
             });
-            
             window.addEventListener('mouseup', () => {
                 isDraggingVolume = false;
             });
