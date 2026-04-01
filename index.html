@@ -123,28 +123,6 @@
             overflow: hidden;
         }
 
-        /* Glassmorphism utilities */
-        .glass-panel {
-            background: rgba(24, 24, 24, 0.4);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .glass-nav {
-            background: rgba(18, 18, 18, 0.85); /* Slightly more opaque on mobile */
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            /* Removed border-bottom to fix white line issue on scroll */
-        }
-
-        .glass-player {
-            background: rgba(24, 24, 24, 0.95); /* More opaque on mobile for readability */
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
         /* Mobile specific utilities */
         .mobile-hide {
             display: none !important;
@@ -169,7 +147,7 @@
 </head>
 <body class="antialiased selection:bg-amber-900 selection:text-white overscroll-none">
 
-    <!-- Top Navbar (App style, Glassmorphism on scroll) -->
+    <!-- Top Navbar (Flat style on scroll) -->
     <nav id="navbar" class="fixed top-0 w-full z-40 transition-all duration-300 bg-transparent h-14 md:h-16 flex items-center px-4 md:px-6 justify-between border-b border-transparent">
         <div class="flex items-center gap-3 md:gap-4 flex-1">
             <button data-action="Navigation Précédente" class="action-btn w-8 h-8 rounded-full bg-black/50 flex items-center justify-center text-spotify-text hover:text-white transition cursor-pointer">
@@ -189,7 +167,7 @@
             <button id="profile-trigger-btn" class="text-spotify-text hover:text-white hover:scale-105 transition font-bold text-sm hidden md:block">
                 Profil
             </button>
-            <button id="profile-trigger-icon" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center hover:scale-105 transition">
+            <button id="profile-trigger-icon" class="w-8 h-8 rounded-full bg-[#181818] border border-white/5 flex items-center justify-center hover:scale-105 transition">
                 <i class="far fa-user text-sm"></i>
             </button>
         </div>
@@ -227,7 +205,7 @@
                         <button data-action="Profil de Yaël" class="action-btn hover:underline cursor-pointer">Yaël</button>
                     </div>
                     <p class="text-spotify-text text-xs md:text-sm font-medium mt-2 md:mt-1 px-4 md:px-0">
-                        Soul, jazz et discussions nocturnes. Mises à jour bi-mensuelles.
+                        Soul, jazz et discussions nocturnes. Mises à jour hebdomadaires.
                     </p>
                 </div>
             </div>
@@ -269,11 +247,11 @@
                     </div>
 
                     <!-- Episode 1 (Mobile optimized) -->
-                    <div id="main-track-row" class="action-btn track-row group flex md:grid md:grid-cols-[40px_1fr_120px_100px] gap-3 md:gap-4 p-2 md:px-4 md:py-3 items-center active:bg-white/10 md:hover:bg-white/5 rounded-md transition-colors cursor-pointer glass-panel md:border-transparent md:hover:border-white/10" data-action="Lecture de : La musique comme refuge">
+                    <div id="main-track-row" class="action-btn track-row group flex md:grid md:grid-cols-[40px_1fr_120px_100px] gap-3 md:gap-4 p-2 md:px-4 md:py-3 items-center active:bg-white/10 md:hover:bg-white/5 rounded-md transition-colors cursor-pointer bg-[#181818] md:bg-transparent md:border-transparent md:hover:border-white/10" data-action="Lecture de : Découvertes et influences - After Hours - S1.EP4">
                         
                         <!-- Thumbnail for mobile, Number for desktop -->
                         <div class="w-12 h-12 md:w-auto md:h-auto flex-shrink-0 relative rounded overflow-hidden md:overflow-visible">
-                            <img src="minia.jpg" class="w-full h-full object-cover md:hidden pointer-events-none" alt="Thumbnail">
+                            <img src="fav.png" class="w-full h-full object-cover md:hidden pointer-events-none" alt="Thumbnail">
                             <div class="hidden md:flex text-center text-spotify-text w-full justify-center items-center">
                                 <span class="track-num">1</span>
                                 <button class="track-play hidden justify-center text-white play-toggle-btn items-center hover:scale-110 transition-transform"><i class="fas fa-play text-xs"></i></button>
@@ -282,8 +260,8 @@
 
                         <!-- Text content -->
                         <div class="flex-1 min-w-0 pr-2 md:pr-4">
-                            <div class="track-title text-white font-medium text-sm md:text-base mb-0.5 md:mb-1 line-clamp-1 transition-colors">La musique comme refuge</div>
-                            <div class="text-spotify-text text-xs md:text-sm line-clamp-1 md:line-clamp-1">Une discussion spontanée sur la façon dont la musique nous accompagne.</div>
+                            <div class="track-title text-white font-medium text-sm md:text-base mb-0.5 md:mb-1 line-clamp-1 transition-colors">Découvertes et influences - After Hours - S1.EP4</div>
+                            <div class="text-spotify-text text-xs md:text-sm line-clamp-1 md:line-clamp-1">Exploration spontanée de sonorités variées, de Marvin Gaye à Alice in Chains.</div>
                         </div>
 
                         <!-- Metadata -->
@@ -295,10 +273,10 @@
                     </div>
                 </div>
 
-                <!-- Concept / About (Glassmorphism card) -->
+                <!-- Concept / About -->
                 <div class="mt-10 md:mt-16">
                     <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">À propos</h2>
-                    <div id="about-trigger" class="glass-panel rounded-xl p-4 md:p-8 active:bg-white/10 md:hover:bg-white/5 transition-colors max-w-3xl cursor-pointer group">
+                    <div id="about-trigger" class="bg-[#181818] border border-white/5 rounded-xl p-4 md:p-8 active:bg-[#282828] md:hover:bg-[#282828] transition-colors max-w-3xl cursor-pointer group">
                         <div class="flex items-start md:items-center justify-between">
                             <p class="text-spotify-text leading-relaxed text-sm md:text-base font-medium pr-4 line-clamp-3 md:line-clamp-none selectable">
                                 Loin du bruit numérique, <strong class="text-white">After Hours</strong> est un espace radiophonique pensé comme un club de jazz confidentiel. Nous y partageons nos dernières pépites vinyles...
@@ -308,7 +286,7 @@
                     </div>
                 </div>
 
-                <!-- Hosts (Glassmorphism Profile Cards) -->
+                <!-- Hosts Profile Cards -->
                 <div class="mt-10 md:mt-16 mb-8">
                     <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Production</h2>
                     
@@ -316,7 +294,7 @@
                     <div class="flex md:grid md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 overflow-x-auto md:overflow-visible pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 snap-x snap-mandatory hide-scrollbar">
                         
                         <!-- Card Axel -->
-                        <div class="glass-panel p-3 md:p-4 rounded-xl active:bg-white/10 md:hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Axel">
+                        <div class="bg-[#181818] border border-white/5 p-3 md:p-4 rounded-xl active:bg-[#282828] md:hover:bg-[#282828] transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Axel">
                             <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Axel" 
                                      alt="Axel" 
@@ -327,7 +305,7 @@
                         </div>
 
                         <!-- Card Yaël (Masculin) -->
-                        <div class="glass-panel p-3 md:p-4 rounded-xl active:bg-white/10 md:hover:bg-white/10 transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Yaël">
+                        <div class="bg-[#181818] border border-white/5 p-3 md:p-4 rounded-xl active:bg-[#282828] md:hover:bg-[#282828] transition-all duration-300 cursor-pointer group action-btn w-32 md:w-auto flex-shrink-0 snap-start" data-action="Ouverture du profil de Yaël">
                             <div class="relative mb-3 md:mb-4">
                                 <img src="https://placehold.co/400x400/282828/f59e0b?text=Ya%C3%ABl" 
                                      alt="Yaël" 
@@ -350,7 +328,7 @@
     </main>
 
     <!-- Modal "À propos" détaillée avec image en plein fondue -->
-    <div id="about-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-0 md:p-8">
+    <div id="about-modal-overlay" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center opacity-0 transition-opacity duration-300 p-0 md:p-8">
         <div id="about-modal-content" class="relative md:max-w-5xl w-full h-full md:h-[60vh] bg-[#181818] md:border md:border-white/10 md:rounded-2xl shadow-2xl overflow-hidden transform scale-95 md:scale-95 transition-transform duration-300 flex flex-col md:flex-row">
             
             <!-- Image background filling the left side and fading to the right -->
@@ -359,7 +337,7 @@
             </div>
             
             <!-- Close button -->
-            <button id="close-about-btn" class="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-black/40 hover:bg-white/10 backdrop-blur-md text-white flex items-center justify-center transition z-20">
+            <button id="close-about-btn" class="absolute top-4 right-4 md:top-6 md:right-6 w-10 h-10 rounded-full bg-black/40 hover:bg-white/10 text-white flex items-center justify-center transition z-20">
                 <i class="fas fa-times md:text-lg"></i>
             </button>
 
@@ -380,7 +358,7 @@
     </div>
 
     <!-- Sidebar Overlay -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/80 z-[60] hidden opacity-0 transition-opacity duration-300"></div>
 
     <!-- Profil Sidebar Panel -->
     <aside id="profile-sidebar" class="fixed top-0 right-0 h-full w-4/5 md:w-80 max-w-sm bg-[#121212] border-l border-white/10 z-[70] transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
@@ -406,28 +384,28 @@
         <!-- Menu Tabs -->
         <div class="flex-1 overflow-y-auto py-2 md:py-4">
             <nav class="flex flex-col">
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Compte">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Compte">
                     <i class="far fa-user w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Compte</span>
                     <i class="fas fa-external-link-alt text-[9px] md:text-[10px] ml-auto opacity-50"></i>
                 </button>
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Profil public">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Profil public">
                     <i class="far fa-id-badge w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Profil public</span>
                 </button>
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Paramètres">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Paramètres">
                     <i class="fas fa-cog w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Paramètres</span>
                 </button>
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Préférences audio">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Préférences audio">
                     <i class="fas fa-sliders-h w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Préférences audio</span>
                 </button>
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Historique d'écoute">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Historique d'écoute">
                     <i class="fas fa-history w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Historique d'écoute</span>
                 </button>
-                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-white/5 transition w-full text-left action-btn" data-action="Menu : Nouveautés">
+                <button class="flex items-center gap-3 md:gap-4 px-4 md:px-6 py-3 md:py-3 text-spotify-text hover:text-white hover:bg-[#181818] transition w-full text-left action-btn" data-action="Menu : Nouveautés">
                     <i class="far fa-bell w-5 text-center text-sm md:text-base"></i>
                     <span class="font-medium text-xs md:text-sm">Nouveautés</span>
                     <span class="ml-auto bg-amber-500 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full"></span>
@@ -451,19 +429,19 @@
 
     <!-- Sticky Audio Player (Spotify Mobile/Desktop Style) -->
     <!-- Added id to footer to serve as mobile trigger area -->
-    <footer id="mobile-player-trigger" class="glass-player fixed bottom-0 left-0 right-0 md:h-[90px] px-2 md:px-4 z-50 rounded-xl md:rounded-none m-1 md:m-0 overflow-hidden cursor-pointer md:cursor-auto flex flex-col justify-center">
+    <footer id="mobile-player-trigger" class="bg-[#181818] border-t border-white/10 fixed bottom-0 left-0 right-0 md:h-[90px] px-2 md:px-4 z-50 rounded-xl md:rounded-none m-1 md:m-0 overflow-hidden cursor-pointer md:cursor-auto flex flex-col justify-center">
         
         <div class="w-full flex items-center justify-between py-2 md:py-0 relative z-10">
             <!-- Left: Current Track Info -->
             <div class="flex items-center gap-3 md:gap-4 w-[65%] md:w-[30%] min-w-0 md:min-w-[180px]">
                 <div class="w-10 h-10 md:w-14 md:h-14 relative group cursor-pointer shrink-0 transition-transform duration-300 hover:scale-105 cover-trigger rounded overflow-hidden shadow-sm">
-                    <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover pointer-events-none">
+                    <img src="fav.png" alt="Cover" class="w-full h-full object-cover pointer-events-none">
                     <div class="absolute inset-0 bg-black/50 hidden group-hover:flex items-center justify-center">
                         <i class="fas fa-expand text-white text-[10px] md:text-xs pointer-events-none"></i>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center min-w-0 pr-2">
-                    <button data-action="Navigation vers l'épisode" class="action-btn text-white text-xs md:text-sm md:hover:underline truncate text-left w-full text-shadow-sm">La musique comme refuge</button>
+                    <button data-action="Navigation vers l'épisode" class="action-btn text-white text-xs md:text-sm md:hover:underline truncate text-left w-full text-shadow-sm">Découvertes et influences - After Hours - S1.EP4</button>
                     <button data-action="Navigation vers le podcast" class="action-btn text-spotify-text text-[10px] md:text-xs md:hover:underline hover:text-white truncate text-left w-full">After Hours</button>
                 </div>
                 <!-- Like button (hidden on tiny screens, moved to right controls) -->
@@ -504,7 +482,8 @@
                     <div id="progress-container" class="h-1 rounded-full flex-1 group cursor-pointer flex items-center relative py-2 -my-2">
                         <div class="w-full h-1 bg-white/20 rounded-full relative pointer-events-none">
                             <div id="progress-fill" class="h-full bg-white group-hover:bg-amber-500 w-0 rounded-full relative pointer-events-none transition-colors">
-                                <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+                                <!-- Centrage parfait avec translate-x-1/2 -->
+                                <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
                             </div>
                         </div>
                     </div>
@@ -515,13 +494,14 @@
             <!-- Right: Extra Controls (Volume - Desktop Only) -->
             <div class="hidden md:flex items-center justify-end gap-3 w-[30%] text-spotify-text pr-2">
                 <button data-action="File d'attente" class="action-btn hover:text-white transition"><i class="fas fa-list text-xs"></i></button>
-                <button id="mute-btn" class="action-btn hover:text-white transition"><i id="mute-icon" class="fas fa-volume-up text-xs"></i></button>
+                <button id="mute-btn" class="action-btn hover:text-white transition"><i id="mute-icon" class="fas fa-volume-high text-xs w-4 text-center inline-block"></i></button>
                 
                 <!-- Volume Bar -->
                 <div id="volume-container" class="w-24 h-1 group cursor-pointer items-center relative py-2 -my-2">
                     <div class="w-full h-1 rounded-full relative pointer-events-none bg-white/20">
                         <div id="volume-fill" style="width: 100%;" class="h-full bg-white group-hover:bg-amber-500 rounded-full relative pointer-events-none transition-colors">
-                            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
+                            <!-- Centrage parfait avec translate-x-1/2 -->
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 bg-white rounded-full opacity-0 group-hover:opacity-100 shadow transition-opacity"></div>
                         </div>
                     </div>
                 </div>
@@ -536,7 +516,7 @@
 
     <!-- Full Screen Mobile Player (Slide-up modal) -->
     <!-- Added id for swipe logic -->
-    <div id="full-mobile-player" class="fixed inset-0 bg-gradient-to-b from-[#4a2e13] to-[#121212] z-[100] transform translate-y-full transition-transform duration-300 flex flex-col px-6 pb-12 pt-12 md:hidden">
+    <div id="full-mobile-player" class="fixed inset-0 bg-gradient-to-b from-[#282828] to-[#121212] z-[100] transform translate-y-full transition-transform duration-300 flex flex-col px-6 pb-12 pt-12 md:hidden">
         
         <!-- Drag Handle Area (for visual cue and easier swiping) -->
         <div id="drag-handle-area" class="absolute top-0 left-0 w-full h-16 flex justify-center pt-3 cursor-grab active:cursor-grabbing">
@@ -551,15 +531,14 @@
         </div>
         
         <!-- Large Cover Art -->
-        <!-- Ajout de shrink-0 et max-w pour garantir que l'image ne soit jamais écrasée verticalement et reste 1:1 -->
         <div class="w-full max-w-[85vw] mx-auto aspect-square shrink-0 shadow-2xl rounded-lg overflow-hidden mb-8 bg-[#181818] relative z-10">
-            <img src="minia.jpg" alt="Cover" class="w-full h-full object-cover pointer-events-none">
+            <img src="fav.png" alt="Cover" class="w-full h-full object-cover pointer-events-none">
         </div>
         
         <!-- Info & Like -->
         <div class="flex justify-between items-end mb-6 relative z-10 shrink-0">
             <div class="flex flex-col pr-4 overflow-hidden">
-                <h2 class="text-2xl font-bold text-white mb-1 truncate">La musique comme refuge</h2>
+                <h2 class="text-2xl font-bold text-white mb-1 truncate">Découvertes et influences - After Hours - S1.EP4</h2>
                 <p class="text-spotify-text text-base truncate">After Hours</p>
             </div>
             <button class="like-btn text-spotify-text active:text-white transition pb-1 text-2xl flex-shrink-0">
@@ -570,10 +549,10 @@
         <!-- Interactive Progress Bar -->
         <div class="mb-8 mt-auto relative z-10 shrink-0">
             <div id="full-progress-container" class="h-1 bg-transparent rounded-full w-full cursor-pointer relative py-4 -my-4 flex items-center">
-                <div class="w-full h-1 rounded-full relative pointer-events-none bg-transparent">
+                <div class="w-full h-1 rounded-full relative pointer-events-none bg-white/20">
                     <div id="full-progress-fill" class="h-full bg-white rounded-full relative pointer-events-none transition-colors w-0">
-                        <!-- Dragger handle always visible on mobile full player -->
-                        <div class="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
+                        <!-- Centrage parfait avec translate-x-1/2 -->
+                        <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 bg-white rounded-full shadow"></div>
                     </div>
                 </div>
             </div>
@@ -599,7 +578,7 @@
 
     <!-- Audio Element avec la source locale demandée -->
     <audio id="main-audio" preload="metadata">
-        <source src="testson.mp3" type="audio/mpeg">
+        <source src="S1E4.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Interactive Scripts -->
@@ -607,23 +586,19 @@
         // Prevent accidental selections and context menus on long press (mobile)
         document.addEventListener('contextmenu', event => event.preventDefault());
 
-        // Navbar Glassmorphism Background on Scroll
+        // Navbar Flat Background on Scroll
         const navbar = document.getElementById('navbar');
         const navTitle = document.getElementById('nav-title');
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 60) {
-                navbar.classList.add('glass-nav');
-                navbar.classList.add('border-white/5');
-                navbar.classList.remove('bg-transparent');
-                navbar.classList.remove('border-transparent');
+                navbar.classList.add('bg-[#121212]', 'border-white/5');
+                navbar.classList.remove('bg-transparent', 'border-transparent');
                 navTitle.classList.remove('opacity-0');
                 navTitle.classList.add('opacity-100');
             } else {
-                navbar.classList.remove('glass-nav');
-                navbar.classList.remove('border-white/5');
-                navbar.classList.add('bg-transparent');
-                navbar.classList.add('border-transparent');
+                navbar.classList.remove('bg-[#121212]', 'border-white/5');
+                navbar.classList.add('bg-transparent', 'border-transparent');
                 navTitle.classList.remove('opacity-100');
                 navTitle.classList.add('opacity-0');
             }
@@ -1085,13 +1060,15 @@
             if (volumeFill) volumeFill.style.width = `${vol * 100}%`;
             audioEl.volume = vol;
             if (muteIcon) {
-                muteIcon.className = 'text-xs fas ';
+                muteIcon.className = 'text-xs fas w-4 text-center inline-block ';
                 if (vol === 0) {
-                    muteIcon.classList.add('fa-volume-mute');
-                } else if (vol < 0.5) {
-                    muteIcon.classList.add('fa-volume-down');
+                    muteIcon.classList.add('fa-volume-xmark');
+                } else if (vol < 0.33) {
+                    muteIcon.classList.add('fa-volume-off');
+                } else if (vol < 0.66) {
+                    muteIcon.classList.add('fa-volume-low');
                 } else {
-                    muteIcon.classList.add('fa-volume-up');
+                    muteIcon.classList.add('fa-volume-high');
                 }
             }
         }
